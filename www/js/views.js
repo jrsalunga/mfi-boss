@@ -14,16 +14,16 @@ _.extend(Backbone.View.prototype, {
 
 	   
 	 
-	    //this.model.off('change', this.render, this);
+	    this.model.off('change', this.render, this);
 
-	    //delete this.$el; // Delete the jQuery wrapped object variable
-	    //delete this.el; // Delete the variable reference to this node
+	    delete this.$el; // Delete the jQuery wrapped object variable
+	    delete this.el; // Delete the variable reference to this node
 	},
 	showCurrentView: function(view, el) {
 		//console.log('showView');
     	if (this.currentView){
     		console.log('showCurrentView this');
-      		clo.currentView.close();
+      		this.currentView.close();
     	}
     	
 	 	this.currentView = view;
@@ -209,17 +209,14 @@ var ApvhdrDetails = Backbone.View.extend({
 		
 		
 		var sumAmount = function(total, supplier){
-		    return total += parseFloat(supplier.get('totamount'));; 
+		    return total += parseFloat(supplier.get('totamount'));
 		}
 		
 
 		var sumPosted = function(total, supplier){
 			var d = 0;
 			if (supplier.get('posted')=="1") {
-				return { 
-					tot: total += parseFloat(supplier.get('totamount')),
-					len: d += 1
-				}
+				return total += parseFloat(supplier.get('totamount'));
 			} else {
 				return total;
 			}
@@ -229,10 +226,23 @@ var ApvhdrDetails = Backbone.View.extend({
 		var sumUnposted = function(total, supplier){
 			var d = 0;
 		    if (supplier.get('posted')=="0") {
-				return { 
-					tot: total += parseFloat(supplier.get('totamount')),
-					len: d += 1
-				}
+				return total += parseFloat(supplier.get('totamount'));
+			} else {
+				return total;
+			}
+		}
+
+		var getpostedlen = function(total, supplier){
+		    if (supplier.get('posted')=="1") {
+				return total += 1;
+			} else {
+				return total;
+			}
+		}
+
+		var getunpostedlen = function(total, supplier){
+		    if (supplier.get('posted')=="0") {
+				return total += 1;
 			} else {
 				return total;
 			}
@@ -259,6 +269,8 @@ var ApvhdrDetails = Backbone.View.extend({
 		    var pct = (amt/that.collection.getFieldTotal('totamount'))*100;
 		    var p = suppliers.reduce(sumPosted, 0);
 			var u = suppliers.reduce(sumUnposted, 0);
+			var pl = suppliers.reduce(getpostedlen, 0);
+			var ul = suppliers.reduce(getunpostedlen, 0);
 		    var x = {
 		        name: o.supplier,
 		        amount: accounting.formatMoney(amt,"", 2,","),
@@ -268,14 +280,14 @@ var ApvhdrDetails = Backbone.View.extend({
 		        supplierid: o.supplierid,
 		        status: o.posted,
 		        id: o.id,
-		        posted: accounting.formatMoney(p.tot,"", 2,","),
-		        unposted: accounting.formatMoney(u.tot,"", 2,","),
-		        postedlen: p.len,
-		        unpostedlen: u.len,
+		        posted: accounting.formatMoney(p,"", 2,","),
+		        unposted: accounting.formatMoney(u,"", 2,","),
+		        postedlen: pl,
+		        unpostedlen: ul
 		    }
 		    return x;
 		})
-		//console.log(_.sortBy(sums, sort));
+		//console.log(sums);
 
 		sums.sort(function (a, b) {
 		    if (a.name > b.name)
@@ -293,7 +305,7 @@ var ApvhdrDetails = Backbone.View.extend({
 		
 	},
 	addAll: function(){
-		this.removeItemViews();
+		this.removeApvhdrDetailViews();
 		this.$el.find('.report-detail-all').empty();
 		//this.$el.find('.report-detail-posted').html('');
 		//this.$el.find('.report-detail-unposted').html('');
@@ -316,18 +328,17 @@ var ApvhdrDetails = Backbone.View.extend({
 		this.c.reset(this.where({supplierid: apvRM.get('supplierid')}));
 		
 		this.apvhdrDetail = new ApvhdrDetail({model: apvRM, collection: this.c});
-		console.log('clean_up');
-		this.apvhdrDetail.listenTo(this, 'clean_up', this.apvhdrDetail.remove);
+		console.log('attach clean_up');
+		// attach clean_up event to apvhdrDetail to listenTo for removal of this view for re render
+		this.apvhdrDetail.listenTo(this, 'clean_up', this.apvhdrDetail.close);
+		console.log(this.apvhdrDetail);
 		this.$el.find('.report-detail-all').append(this.apvhdrDetail.render().el);
 		
 		return this;
 	},
-	removeItemViews: function(){
+	removeApvhdrDetailViews: function(){
 		console.log('this trigger clean_up');
 		this.trigger('clean_up');
-	},
-	remove: function(){
-		console.log('remove');
 	},
 	loadPosted: function(apvRM){
 		this.c.reset(this.where({supplierid: apvRM.get('supplierid')}));

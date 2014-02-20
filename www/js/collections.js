@@ -4,7 +4,8 @@ var Apvhdrs = Backbone.Collection.extend({
 	model: Apvhdr,
 	initialize: function(){
 		this.on('reset', function(){
-			//console.log('reset Apvhdrs');
+			//console.log('reset apvhdrs');
+			//console.log(this);
 		}, this);
 		this.on('reset', this.resetVars, this);
 	},
