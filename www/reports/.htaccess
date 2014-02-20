@@ -1,0 +1,7 @@
+RewriteEngine on
+
+
+RewriteRule ^index(\/.*)*$ /mfi-boss/reports/index.php
+RewriteRule ^apvhdr(\/.*)*$ /mfi-boss/reports/apvhdr.php
+RewriteRule ^cvhdr(\/.*)*$ /mfi-boss/reports/cvhdr.php
+
