@@ -1,6 +1,8 @@
 <?php
 require_once('../lib/initialize.php');
 $session->is_logged_in() ? redirect_to("index"): "";
+
+
 ?>
 <!DOCTYPE HTML>
 <html lang="en-ph">
@@ -36,7 +38,7 @@ $session->is_logged_in() ? redirect_to("index"): "";
     <div class="row">
    		<div class="login-container img-rounded">
         
-			<form class="form-signin" role="form" method="post" action="api/AuthUserLogin">
+			<form class="form-signin" role="form" method="post" action="<?= $_SERVER['REMOTE_ADDR']=='127.0.0.1' ? '/mfi-boss/www/api/AuthUserLogin':'api/AuthUserLogin'; ?>">
                 <h2 class="form-signin-heading">Please sign in</h2>
                 	<input class="form-control" name="username" type="texr" autofocus="" required="" placeholder="Username">
                 	<input class="form-control" name="password" type="password" required="" placeholder="Password">
