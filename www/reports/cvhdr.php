@@ -79,23 +79,14 @@ $(document).ready(function(e) {
             -->    
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-file"></span>
+                    <span class="glyphicon glyphicon-cog"></span>
                     <b class="caret"></b>
                     </a>
                         <ul class="dropdown-menu">
-                        	<li><a href="#project/add">New Project</a></li>
-                            <li><a href="#customer/add">New Customer</a></li>
-                            <li><a href="#salesman/add">New Salesman</a></li>
-                            <!--
-                            <li class="dropdown-header">Singles</li>
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li class="dropdown-header">Hi-Rise</li>
-                            <li><a href="#projects/morgan">Morgan</a></li>
-                            <li><a href="#projects/marco-polo">Marco Polo</a></li>
-                            -->
+                        	<li><a href="#settings">Settings</a></li>
+                            <li><a href="../logout">Sign Out</a></li>
+
+     
                       </ul>
                 </li>
             </ul>  

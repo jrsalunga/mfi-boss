@@ -20,8 +20,9 @@ var AppRouter = Backbone.Router.extend({
 
     initialize: function () {
     	var reportApvhdr = new ReportApvhdr({collection: apvhdrs});
+
     	
-		//console.log(reportApvhdr);
+		console.log(reportApvhdr);
 		//reportApvhdr.render();
 
        
@@ -50,8 +51,8 @@ var AppRouter = Backbone.Router.extend({
 
     },
     apvdue: function(due){
-    	//apvhdrs.url = '../www/api/r/apvdue?due='+ due;
-        apvhdrs.url = 'http://mfi-boss.no-ip.biz/api/r/apvdue?callback=hello&due='+ due;
+    	apvhdrs.url = '../www/api/r/apvdue?due='+ due;
+        //apvhdrs.url = 'http://mfi-boss.no-ip.biz/api/r/apvdue?callback=hello&due='+ due;
 		apvhdrs.fetch({reset: true});
 
         $('#range-to').val(due);

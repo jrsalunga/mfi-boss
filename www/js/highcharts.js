@@ -1,4 +1,10 @@
-
+Highcharts.setOptions({
+    chart: {
+        style: {
+            fontFamily: 'tahoma'
+        }
+    }
+});
 
 var vPie = Backbone.View.extend({
 	
@@ -6,6 +12,7 @@ var vPie = Backbone.View.extend({
 		this.collection.on('reset', this.render, this);	
 	},
 	render: function(){
+
 		this.hData = [];
 		//this.loadData();
 		this.loadData2();
@@ -34,7 +41,17 @@ var vPie = Backbone.View.extend({
 	                    color: '#000000',
 	                    connectorColor: '#ccc',
 	                    format: '<b>{point.code}</b>: {point.percentage:.2f} %'
-	                }
+	                },
+	                point: {
+                    events: {
+                        mouseOver: function() {
+                            $('#panel-'+this.supplierid).addClass('selected');
+                        },
+                        mouseOut: function() {
+                            $('#panel-'+this.supplierid).removeClass('selected');
+                        }
+                    }
+                },
 	            }
 	        },
 	        series: [{
@@ -53,7 +70,8 @@ var vPie = Backbone.View.extend({
 			{
 				name: apvhdr.get('supplier'),
 				y: pct,
-				code: apvhdr.get('suppliercode')
+				code: apvhdr.get('suppliercode'),
+				supplierid: apvhdr.get('supplierid')
 			}
 		);
 	},
@@ -71,14 +89,30 @@ var vPie = Backbone.View.extend({
 		    return total += parseFloat(supplier.get('totamount'));; 
 		}
 
+		var getObj = function(total, supplier){
+
+			var x = {
+				code: supplier.get('suppliercode'),
+				supplier: supplier.get('supplier'),
+				supplierid: supplier.get('supplierid'),
+				posted: supplier.get('posted'),
+				id: supplier.get('id'),
+
+			}
+
+			return x;
+		}
+
 		var sums = _.map( supplierByDue, function(suppliers, supplier){
+			var o = suppliers.reduce(getObj, 0);
 			var amt = suppliers.reduce(sumAmount, 0);
 		    var pct = (amt/that.collection.getFieldTotal('totamount'))*100;
 		    var x = {
 		        name: supplier,
 		        amount: accounting.formatMoney(amt,"", 2,","),
 		        y: parseFloat(accounting.toFixed(pct,2)),
-		        code: supplier
+		        code: supplier,
+		        supplierid: o.supplierid
 		    }
 		    return x;
 		});
@@ -455,6 +489,7 @@ var vColumn =  Backbone.View.extend({
 		this.collection.on('reset', this.render, this);
 	},
 	render: function(){
+
 		this.categories = [];
 		this.posted = [];
 		this.unposted = [];

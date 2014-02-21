@@ -2,6 +2,7 @@ RewriteEngine on
 
 
 RewriteRule ^index(\/.*)*$ /mfi-boss/reports/index.php
+RewriteRule ^apvhdr-age(\/.*)*$ /mfi-boss/reports/apvhdr-age.php
 RewriteRule ^apvhdr(\/.*)*$ /mfi-boss/reports/apvhdr.php
 RewriteRule ^cvhdr(\/.*)*$ /mfi-boss/reports/cvhdr.php
 

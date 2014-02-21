@@ -72,7 +72,7 @@ class Session {
 	public function login($user) {
     // database should find user based on username/password
     	if($user) { 
-			$this->user_id = $_SESSION['cid'] = $user->personid;
+			$this->user_id = $_SESSION['cid'] = $user->id;
      		$this->logged_in = true;   
         }
   	}

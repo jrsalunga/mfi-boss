@@ -1071,14 +1071,14 @@ function authUserLogin() {
 
     $app = \Slim\Slim::getInstance();
     $session = Session::getInstance();
-    $database = MySQLDatabase::getInstance();
-   
-    /*
+    //$database = MySQLDatabase::getInstance();
+    global $database;
+    
     $request = $app->request();
     $usr = $database->escape_value($request->post('username'));
     $pwd = $database->escape_value($request->post('password'));
-    */
-
+    
+    /*
     $request = $app->request()->getBody();
     $post = json_decode($request, true);
     $usr = $database->escape_value($post['username']);
@@ -1103,28 +1103,27 @@ function authUserLogin() {
         }
     }
     */
+    //echo $usr;
+    //echo $pwd;
 
-    #$found_user = User::auth($usr,$pwd);
+    $found_user = User::auth($usr,$pwd);
+    //echo var_dump($request->post('username'));
 
-    #if($found_user) {
-    if($usr == 'admin' && $pwd =='password') {
+    if($found_user) {
+    #if($usr == 'admin' && $pwd =='password') {
 
-        $_SESSION['cid'] = '001';
-        $session->set_fullname('Juan dela Cruz');
+        $session->login($found_user);
+
+        //$_SESSION['cid'] = '001';
+        $session->set_fullname($found_user->descriptor);
     
-        $respone = array(
-            'status' => 'ok', 
-            'code' => '200'
-        );
+        $app->redirect('/mfi-boss/index');
     } else {
 
-         $respone = array(
-            'status' => 'error', 
-            'code' => '404'
-        );
+        $app->redirect('/mfi-boss/login?error');
     }   
     
-    echo json_encode($respone);
+    //echo json_encode($respone);
 }
 
 
@@ -1591,7 +1590,12 @@ function apvGetDue(){
     $result = vApvhdr::getDue($due, $posted);
     //echo $database->last_query;
 
-    
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET");
+    header("Access-Control-Allow-Headers: X-Requested-With");
+    header("Access-Control-Max-Age: 86400");
+
     echo json_encode($result);
 
 }

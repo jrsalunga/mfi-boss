@@ -18,6 +18,8 @@ _.extend(Backbone.View.prototype, {
 
 	    delete this.$el; // Delete the jQuery wrapped object variable
 	    delete this.el; // Delete the variable reference to this node
+	    delete this;
+	    //this = null;
 	},
 	showCurrentView: function(view, el) {
 		//console.log('showView');
@@ -48,10 +50,7 @@ var ApvReportModel = Backbone.Model.extend({
 	}
 });
 var ApvReportCollection = Backbone.Collection.extend({
-	model: ApvReportModel,
-	initialize: function(){
-		this.comparator = 'suppliercode';
-	}
+	model: ApvReportModel
 });
 
 
@@ -68,6 +67,7 @@ var ApvDtl = Backbone.View.extend({
 
 	},
 	render: function(){
+		console.log(this);
 		this.$el.html(this.template(this.model.toJSON()));
 		this.$el.attr("data-posted", this.model.get('posted'));
 		return this;
@@ -89,21 +89,24 @@ var ApvDtls = Backbone.View.extend({
 			+'<tbody class="apv-list"></tbody></table>');
 	},
 	render: function(){
+		this.cleanUp();
 		this.$el.find('.tb-data tbody').empty();
 		this.addAll();
 		return this;
 	},
 	addOne: function(apvhdr){
-		var apvReport = new ApvDtl({model: apvhdr});
+		this.apvReport = new ApvDtl({model: apvhdr});
 		//console.log(apvReport);
-		this.$el.find('.tb-data tbody').append(apvReport.render().el);
+		this.apvReport.listenTo(this, 'clean_up', this.apvReport.close);
+		this.$el.find('.tb-data tbody').append(this.apvReport.render().el);
 		
 	},
 	addAll: function(){
 		this.collection.each(this.addOne, this);
 	},
-	beforeClose: function(){
-		console.log('beforeClose fired!')
+	cleanUp: function(){
+		console.log('this trigger clean_up');
+		this.trigger('clean_up');
 	}
 });
 
@@ -114,7 +117,7 @@ var ApvhdrDetail = Backbone.View.extend({
 		this.model.on('change', this.render, this);
 		this.apvDtls = new ApvDtls({collection: this.collection});
 		this.template = _.template(' '
-        	+'<div class="panel-heading">'
+        	+'<div id="panel-<%-supplierid%>" class="panel-heading">'
           	+'<h4 class="panel-title">'
             +'<a data-toggle="collapse" data-parent="#apvhdr-details" href="#collapse-<%-guid%>">'
             +'<%-name%>'//' <span class="badge"><%-totline%></span>'
@@ -132,6 +135,7 @@ var ApvhdrDetail = Backbone.View.extend({
           	+'</div></div>');
 	},
 	render: function(){
+		console.log(this.apvDtls);
 		this.model.set({guid: this.uid()}, {silent: true});
 
 		this.$el.html(this.template(this.model.toJSON()));
@@ -212,7 +216,6 @@ var ApvhdrDetails = Backbone.View.extend({
 		    return total += parseFloat(supplier.get('totamount'));
 		}
 		
-
 		var sumPosted = function(total, supplier){
 			var d = 0;
 			if (supplier.get('posted')=="1") {
@@ -289,6 +292,13 @@ var ApvhdrDetails = Backbone.View.extend({
 		})
 		//console.log(sums);
 
+		var high = _.chain(sums)
+			  .sortBy(function(sums){ return sums.name; })
+			  .map(function(sums){ return sums.name + ' is ' + sums.amount; })
+			  .first()
+			  .value();
+		console.log(high);
+
 		sums.sort(function (a, b) {
 		    if (a.name > b.name)
 		      return 1;
@@ -340,6 +350,7 @@ var ApvhdrDetails = Backbone.View.extend({
 		console.log('this trigger clean_up');
 		this.trigger('clean_up');
 	},
+	/*
 	loadPosted: function(apvRM){
 		this.c.reset(this.where({supplierid: apvRM.get('supplierid')}));
 		
@@ -356,8 +367,10 @@ var ApvhdrDetails = Backbone.View.extend({
 		
 		return this;
 	}
+	*/
 });
 
+/*
 var ApvReport = Backbone.View.extend({
 	tagName: 'tr',
 	initialize: function(){
@@ -402,6 +415,7 @@ var ApvReports = Backbone.View.extend({
 		this.collection.each(this.addOne, this);
 	}
 });
+*/
 
 var ReportApvhdr = Backbone.View.extend({
 	el: '#apvhdr-report',
@@ -429,6 +443,8 @@ var ReportApvhdr = Backbone.View.extend({
 		
 		console.log(this.pie);
 		console.log(this.apvLine);
+		console.log(this.column);
+		console.log(this.apvhdrDetails);
 
 		this.$el.find('#range-to').val(moment().format("YYYY-MM-DD"));
 		

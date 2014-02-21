@@ -1,10 +1,17 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="utf-8">
-<title>ModularFusion</title>
-</head>
+<?php
+include_once('../lib/initialize.php');
 
-<body>
-</body>
-</html>
+
+
+
+
+	
+
+	
+	$session->logout();
+	
+	
+    redirect_to("login");
+
+
+?>
