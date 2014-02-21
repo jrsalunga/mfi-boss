@@ -8,9 +8,9 @@ RewriteEngine on
 
 
 
-RewriteRule ^index(\/.*)*$ /mfi-boss/index.php
+RewriteRule ^index(\/.*)*$ index.php
 RewriteRule ^dashboard(\/.*)*$ /index.php
-RewriteRule ^login(\/.*)*$ /mfi-boss/login.php
+RewriteRule ^login(\/.*)*$ login.php
 #RewriteRule ^AuthUserLogin(\/.*)*$ /mfi-boss/api/
 
 #/mfi-boss/www/api/AuthUserLogin

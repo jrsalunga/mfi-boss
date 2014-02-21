@@ -1118,10 +1118,11 @@ function authUserLogin() {
         $session->set_fullname($found_user->descriptor);
     
        
-
-        $_SERVER['REMOTE_ADDR']=='127.0.0.1' ?  $app->redirect('/mfi-boss/index') : $app->redirect('/index'); 
+        $app->redirect('/index');
+        //$_SERVER['REMOTE_ADDR']=='127.0.0.1' ?  $app->redirect('/mfi-boss/index') : $app->redirect('/index'); 
     } else {
-        $_SERVER['REMOTE_ADDR']=='127.0.0.1' ?  $app->redirect('/mfi-boss/login?error') : $app->redirect('/login?error'); 
+        $app->redirect('/login?error');
+        //$_SERVER['REMOTE_ADDR']=='127.0.0.1' ?  $app->redirect('/mfi-boss/login?error') : $app->redirect('/login?error'); 
         //$app->redirect('/mfi-boss/login?error');
     }   
     
