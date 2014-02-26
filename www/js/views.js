@@ -14,10 +14,11 @@ _.extend(Backbone.View.prototype, {
 
 	   
 	 
-	    this.model.off('change', this.render, this);
+		console.log(this.$el);
+		console.log(this.el);	    
 
-	    delete this.$el; // Delete the jQuery wrapped object variable
-	    delete this.el; // Delete the variable reference to this node
+	    //delete this.$el; // Delete the jQuery wrapped object variable
+	   	delete this.el; // Delete the variable reference to this node
 	    delete this;
 	    //this = null;
 	},
@@ -50,7 +51,12 @@ var ApvReportModel = Backbone.Model.extend({
 	}
 });
 var ApvReportCollection = Backbone.Collection.extend({
-	model: ApvReportModel
+	model: ApvReportModel,
+	initialize: function(){
+		this.on('add', function(){
+			//console.log(this);
+		}, this)
+	}
 });
 
 
@@ -89,9 +95,11 @@ var ApvDtls = Backbone.View.extend({
 			+'<tbody class="apv-list"></tbody></table>');
 	},
 	render: function(){
-		this.cleanUp();
-		this.$el.find('.tb-data tbody').empty();
-		this.addAll();
+		
+			this.cleanUp();
+			this.$el.find('.tb-data tbody').empty();
+			this.addAll();
+
 		return this;
 	},
 	addOne: function(apvhdr){
@@ -338,16 +346,16 @@ var ApvhdrDetails = Backbone.View.extend({
 		this.c.reset(this.where({supplierid: apvRM.get('supplierid')}));
 		
 		this.apvhdrDetail = new ApvhdrDetail({model: apvRM, collection: this.c});
-		console.log('attach clean_up');
+		//console.log('attach clean_up');
 		// attach clean_up event to apvhdrDetail to listenTo for removal of this view for re render
 		this.apvhdrDetail.listenTo(this, 'clean_up', this.apvhdrDetail.close);
-		console.log(this.apvhdrDetail);
+		//console.log(this.apvhdrDetail);
 		this.$el.find('.report-detail-all').append(this.apvhdrDetail.render().el);
 		
 		return this;
 	},
 	removeApvhdrDetailViews: function(){
-		console.log('this trigger clean_up');
+		//console.log('this trigger clean_up');
 		this.trigger('clean_up');
 	},
 	/*
@@ -460,7 +468,7 @@ var ReportApvhdr = Backbone.View.extend({
 		return this;
 	},
 	searchDue: function(){
-		_.isEmpty(this.$el.find('#range-to').val()) ? '' : app.navigate("apvdue/"+ this.$el.find('#range-to').val() , {trigger: true});
+		_.isEmpty(this.$el.find('#range-to').val()) ? '' : apvhdrsDue.navigate("apvdue/"+ this.$el.find('#range-to').val() , {trigger: true});
 	},
 	setAll: function(){
 
@@ -519,3 +527,536 @@ var ReportApvhdr = Backbone.View.extend({
 	}
 });
 
+
+
+/*
+var vAgeApvhdr = Backbone.View.extend({
+	initialize: function(){
+		this.model.on('change', this.render, this);
+		this.template = _.template('<div><%-suppliercode%></div>');
+	},
+	render: function(){
+		this.$el.html(this.template(this.model.toJSON()))
+		return this;
+	}
+});
+
+
+var vAgeApvhdrs = Backbone.View.extend({
+	initialize: function(){
+		this.collection.on('reset', this.render, this);
+		this.collection.on('add', this.addOne, this);
+	},
+	render: function(){
+		this.$el.empty();
+		this.addAll();
+		return this;
+	},
+	addOne: function(apvhdrs){
+		var vageApvhdr = new vAgeApvhdr({model: apvhdrs});
+		this.$el.append(vageApvhdr.render().el);
+	},
+	addAll: function(){
+		this.collection.each(this.addOne, this);
+	}
+});
+
+
+var ApvhdrAgeDetails = Backbone.View.extend({
+
+	initialize: function(){
+
+		//this.c = new Apvhdrs();
+
+		this.c_age0 = new Apvhdrs();
+		this.c_age30 = new Apvhdrs();
+		this.c_age60 = new Apvhdrs();
+		this.c_age90 = new Apvhdrs();
+		this.c_age120 = new Apvhdrs();
+		this.c_age150 = new Apvhdrs();
+		
+		
+
+
+		this.v_age0 = new vAgeApvhdrs({el: '.report-detail-0 .panel-body', collection: this.c_age0});
+		//this.$el.find('.report-detail-0').append(this.v_age0.render().el);
+
+		this.v_age30 = new vAgeApvhdrs({el: '.report-detail-30 .panel-body', collection: this.c_age30});
+		//this.$el.find('.report-detail-30').append(this.v_age30.render().el);
+
+		this.v_age60 = new vAgeApvhdrs({el: '.report-detail-60 .panel-body', collection: this.c_age60});
+		//this.$el.find('.report-detail-60').append(this.v_age60.render().el);
+
+		this.v_age90 = new vAgeApvhdrs({el: '.report-detail-90 .panel-body', collection: this.c_age90});
+		//this.$el.find('.report-detail-90').append(this.v_age90.render().el);
+
+		this.v_age120 = new vAgeApvhdrs({el: '.report-detail-120 .panel-body', collection: this.c_age120});
+		//this.$el.find('.report-detail-120').append(this.v_age120.render().el);
+
+		this.v_age150 = new vAgeApvhdrs({el: '.report-detail-150 .panel-body', collection: this.c_age150});
+		//this.$el.find('.report-detail-150').append(this.v_age150.render().el);
+		
+
+		this.collection.on('reset', this.resetVars, this);
+	},
+	resetVars: function(){
+
+		this._iDate =  _.isEmpty($('#range-to').val()) ? alert('no date selected') : $('#range-to').val();
+
+		this.c_age0.reset();
+		this.c_age30.reset();
+		this.c_age60.reset();
+		this.c_age90.reset();
+		this.c_age120.reset();
+		this.c_age150.reset();
+
+		this.collection.each(this.loadData, this);
+
+
+		this.addAll();
+	},
+	loadData: function(apvhdrs){
+	
+		
+		var now =	new Date(this._iDate.replace(/-/g, ','));
+		var date = new Date(apvhdrs.get('due').replace(/-/g, ','));
+
+		var timeDiff = Math.abs(now.getTime() - date.getTime());
+		var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+		console.log(diffDays);
+
+		if(diffDays == 0){
+			//console.log('1 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age0.add(apvhdrs.toJSON());
+
+		} else if(diffDays >= 1 && diffDays <= 30){
+			//console.log('1 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age30.add(apvhdrs.toJSON());
+
+		} else if(diffDays >= 31 && diffDays <= 60){
+			//console.log('2 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age60.add(apvhdrs.toJSON());
+
+		} else if(diffDays >= 61 && diffDays <= 90){
+			//console.log('3 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age90.add(apvhdrs.toJSON());
+
+		} else if(diffDays >= 91 && diffDays <= 120){
+			//console.log('4 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age120.add(apvhdrs.toJSON());
+
+		} else if(diffDays >= 120 ){
+			//console.log('5 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age150.add(apvhdrs.toJSON());
+
+		}
+		
+	},
+	addAll: function(){
+
+
+		
+	}
+});
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var AgeApvDtl = Backbone.View.extend({
+	tagName: 'tr',
+	initialize: function(){
+
+		this.model.on('change', this.render, this);
+
+		this.template = _.template('<td><%- suppliercode %><td><%- refno %></td><td><%- due %></td>'
+			+'<td><%- posted %></td>'
+			+'<td style="text-align: right;"><%= accounting.formatMoney(totamount,"", 2,",") %></td>'
+			+'<td style="text-align: right;"><%= accounting.formatMoney(balance,"", 2,",") %></td>');
+
+	},
+	render: function(){
+		console.log(this);
+		this.$el.html(this.template(this.model.toJSON()));
+		this.$el.attr("data-posted", this.model.get('posted'));
+		return this;
+	}
+});
+
+var AgeApvDtls = Backbone.View.extend({
+	initialize: function(){
+
+		//this.collection.on('reset', this.render, this);
+		this.$el.html('<table class="table table-striped tb-data">'
+			+'<thead>'
+			+'<th>Supplier</th>'
+			+'<th>Ref No.</th>'
+			+'<th>Due</th>'
+			+'<th>Posted</th>'
+			+'<th>Amount</th>'
+			+'<th>Balance</th>'
+			+'</thead>'
+			+'<tbody class="apv-list"></tbody></table>');
+	},
+	render: function(){
+			this.cleanUp();
+			this.$el.find('.tb-data tbody').empty();
+			this.addAll();
+
+		return this;
+	},
+	addOne: function(apvhdr){
+		this.apvReport = new AgeApvDtl({model: apvhdr});
+		//console.log(apvReport);
+		this.apvReport.listenTo(this, 'clean_up', this.apvReport.close);
+		this.$el.find('.tb-data tbody').append(this.apvReport.render().el);
+		
+	},
+	addAll: function(){
+		this.collection.each(this.addOne, this);
+	},
+	cleanUp: function(){
+		console.log('trigger clean_up AgeApvDtls');
+		this.trigger('clean_up');
+	}
+});
+
+var AgeApvhdrDetail = Backbone.View.extend({
+	className: 'panel panel-default',
+	initialize: function(){
+		this.model.on('change', this.render, this);
+		this.apvDtls = new AgeApvDtls({collection: this.collection});
+		this.template = _.template(' '
+        	+'<div id="panel" class="panel-heading">'
+          	+'<h4 class="panel-title">'
+            +'<a data-toggle="collapse" data-parent=".report-detail-all" href="#collapse-<%-code%>">'
+            +'<%-supplier%>'//' <span class="badge"><%-totline%></span>'
+            +'</a>'
+            +' <span class="badge a"><%-totline%></span>'
+            //+' <span class="badge p" style="display:none;"><%-postedlen%></span>'
+            //+' <span class="badge u" style="display:none;"><%-unpostedlen%></span>'
+            +'<span class="pull-right tot a"><%= accounting.formatMoney(totamount,"", 2,",") %></span>'
+            //+'<span class="pull-right tot u" style="display:none;"><%-unposted%></span>'
+            //+'<span class="pull-right tot p" style="display:none;"><%-posted%></span>'
+          	+'</h4></div>'
+        	+'<div id="collapse-<%-code%>" class="panel-collapse collapse">'
+          	+'<div class="panel-body">'
+          	//+'Lorem Ipsum soloer'
+          	+'</div></div>');
+	},
+	render: function(){
+		this.cleanUp() // clean up ung mga anak lang
+
+		this.model.set({guid: this.uid()}, {silent: true});
+
+		this.$el.html(this.template(this.model.toJSON()));
+		this.$el.attr("data-posted", this.model.get('status'));
+		//var apvDtls = new ApvDtls({collection: this.collection});
+		//this.$el.find('.panel-body').html(apvDtls.render().el);
+
+		//this.showCurrentView(this.apvDtls, this.$el.find('.panel-body'));
+		this.apvDtls.listenTo(this, 'clean_up', this.apvDtls.close);
+		this.$el.find('.panel-body').html(this.apvDtls.render().el);
+		return this;
+	},
+	uid: function(){
+
+		var S4 = function() {
+	   		return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+		}
+
+		var guid = function() {
+	   		return (S4()+S4()+S4()+S4()+S4()+S4()+S4()+S4());
+		}
+
+		return guid();
+	},
+	cleanUp: function(){
+		console.log('trigger clean_up AgeApvhdrDetail');
+		this.trigger('clean_up');
+	}
+});
+
+
+var AgeApvhdrDetails = Backbone.View.extend({
+	initialize: function(){
+
+		this.c_age0 = new Apvhdrs();
+		this.c_age30 = new Apvhdrs();
+		this.c_age60 = new Apvhdrs();
+		this.c_age90 = new Apvhdrs();
+		this.c_age120 = new Apvhdrs();
+		this.c_age150 = new Apvhdrs();
+
+		this.c_ages = new ApvReportCollection([
+			{code: 'age0', supplier: 'Current', percent: '', totline: 0, totamount: 0.00 },
+			{code: 'age30', supplier: 'Age 30', percent: '', totline: 0, totamount: 0.00 },
+			{code: 'age60', supplier: 'Age 60', percent: '', totline: 0, totamount: 0.00 },
+			{code: 'age90', supplier: 'Age 90', percent: '', totline: 0, totamount: 0.00 },
+			{code: 'age120', supplier: 'Age 120', percent: '', totline: 0, totamount: 0.00 },
+			{code: 'age150', supplier: 'Over 120', percent: '', totline: 0, totamount: 0.00 }
+			]);
+
+		//this.posted = new ApvReportCollection();
+		//this.unposted = new ApvReportCollection();
+		this.collection.on('reset', this.resetVars, this);
+		
+	},
+	resetVars: function(){
+		this._iDate =  _.isEmpty($('#range-to').val()) ? alert('no date selected') : $('#range-to').val();
+
+		this.c_age0.reset();
+		this.c_age30.reset();
+		this.c_age60.reset();
+		this.c_age90.reset();
+		this.c_age120.reset();
+		this.c_age150.reset();
+
+		this.collection.each(this.loadData, this);
+
+		this.addAll();
+	},
+	render: function(){
+		
+	},
+	addAll: function(){
+		this.cleanUp();
+		this.$el.find('.report-detail-all').empty();
+		//this.$el.find('.report-detail-posted').html('');
+		//this.$el.find('.report-detail-unposted').html('');
+		this.c_ages.each(this.loadAll, this);
+		//this.posted.each(this.loadPosted, this);
+		//this.unposted.each(this.loadUnposted, this);
+		
+	},
+	loadAll: function(apvRM){
+		 
+		var col;
+
+		switch(apvRM.get('code')){
+			case 'age0':
+				col = this.c_age0;
+				apvRM.set({totline: this.c_age0.length, totamount: this.c_age0.getFieldTotal('totamount')});
+			    break;
+			case 'age30':
+			    col = this.c_age30;
+			    apvRM.set({totline: this.c_age30.length, totamount: this.c_age30.getFieldTotal('totamount')});
+			    break;
+			case 'age60':
+			    col = this.c_age60;
+			    apvRM.set({totline: this.c_age60.length, totamount: this.c_age60.getFieldTotal('totamount')});
+			    break;
+			case 'age90':
+			    col = this.c_age90;
+			    apvRM.set({totline: this.c_age90.length, totamount: this.c_age90.getFieldTotal('totamount')});
+			    break;
+			case 'age120':
+			    col = this.c_age120;
+			    apvRM.set({totline: this.c_age120.length, totamount: this.c_age120.getFieldTotal('totamount')});
+			    break;
+			case 'age150':
+			    col = this.c_age150;
+			    apvRM.set({totline: this.c_age150.length, totamount: this.c_age150.getFieldTotal('totamount')});
+			    break;
+		}
+
+		this.vageApvhdrs = new AgeApvhdrDetail({model:apvRM, collection: col});
+		console.log(this.vageApvhdrs);
+		this.vageApvhdrs.listenTo(this, 'clean_up', this.vageApvhdrs.close);
+		this.$el.find('.report-detail-all').append(this.vageApvhdrs.render().el);
+		
+	},
+	loadData: function(apvhdrs){
+	
+		
+		var now = new Date(this._iDate.replace(/-/g, ','));
+		var date = new Date(apvhdrs.get('due').replace(/-/g, ','));
+
+		var timeDiff = Math.abs(now.getTime() - date.getTime());
+		var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+		//console.log(diffDays);
+
+		if(diffDays == 0){
+			//console.log('1 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age0.add(apvhdrs.toJSON());
+
+		} else if(diffDays >= 1 && diffDays <= 30){
+			//console.log('1 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age30.add(apvhdrs.toJSON());
+
+		} else if(diffDays >= 31 && diffDays <= 60){
+			//console.log('2 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age60.add(apvhdrs.toJSON());
+
+		} else if(diffDays >= 61 && diffDays <= 90){
+			//console.log('3 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age90.add(apvhdrs.toJSON());
+
+		} else if(diffDays >= 91 && diffDays <= 120){
+			//console.log('4 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age120.add(apvhdrs.toJSON());
+
+		} else if(diffDays >= 120 ){
+			//console.log('5 mons');
+			//console.log(apvhdrs.get('due'));
+			this.c_age150.add(apvhdrs.toJSON());
+
+		}
+		
+	},
+	cleanUp: function(){
+		console.log('trigger clean_up AgeApvhdrDetails');
+		this.trigger('clean_up');
+	}
+});
+
+
+
+var ReportApvhdrAge = Backbone.View.extend({
+	//el: '#apvhdr-report',
+	initialize: function(){
+
+		this.apvhdrs = new Apvhdrs();
+		this.pie_apvhdrs = new Apvhdrs();
+
+		this.pie = new vPie({el: "#c-pie", collection: this.pie_apvhdrs, settings: {title: 'Percentage per Age Total'}});
+		this.stackedBar = new vStackedBar({el: "#c-stacked-bar", collection: this.collection,  settings: {title: 'Total Amount per Age'}});
+		console.log(this.stackedBar);
+		//this.apvhdrAgeDetails = new ApvhdrAgeDetails({el: '#apvhdr-age-details' , collection: this.collection});
+		this.ageApvhdrDetails = new AgeApvhdrDetails({el: '#apvhdr-age-details' , collection: this.collection});
+		console.log(this.ageApvhdrDetails);
+		//this._iDate = moment().format("YYYY-MM-DD"); // input date
+		this.$el.find('#range-to').val(moment().format("YYYY-MM-DD"));
+
+		this.listenTo(this.collection, 'reset', function(){
+			this.apvhdrs.reset(this.collection.toJSON());
+			this.pie_apvhdrs.reset(this.collection.toJSON());
+			this.apvhdrs.loadAgeData(this.$el.find('#range-to').val());
+			//console.log(this.apvhdrs._age0);
+		});
+
+		this._iDate =  _.isEmpty(this.$el.find('#range-to').val()) ? moment().format("YYYY-MM-DD") : this.$el.find('#range-to').val() ;
+	},
+	events: {
+		'click .btn-date-range': 'searchDue',
+		'click #filter-mon-all': 'setAgeAll',
+		'click #filter-mon-0': 'setAge0',
+		'click #filter-mon-1': 'setAge30',
+		'click #filter-mon-2': 'setAge60',
+		'click #filter-mon-3': 'setAge90',
+		'click #filter-mon-4': 'setAge120',
+		'click #filter-mon-5': 'setAge150'
+	},
+	searchDue: function(){
+		//this.currentDate
+		this._iDate =  _.isEmpty(this.$el.find('#range-to').val()) ? moment().format("YYYY-MM-DD") : this.$el.find('#range-to').val() ;
+		//console.log(c);
+
+		apvhdrsAge.navigate("apvdue/"+ this._iDate , {trigger: true});
+	
+	},
+	setAgeAll: function(){
+		$('.panel-collapse').removeClass('in').css('height', ' 0px');
+        this.pie_apvhdrs.reset(this.collection.toJSON());
+	},
+	setAge0: function(){
+        this.pie_apvhdrs.reset(this.apvhdrs._age0);
+	},
+	setAge30: function(){
+        this.pie_apvhdrs.reset(this.apvhdrs._age30);
+	},
+	setAge60: function(){
+        this.pie_apvhdrs.reset(this.apvhdrs._age60);
+	},
+	setAge90: function(){
+        this.pie_apvhdrs.reset(this.apvhdrs._age90);
+	},
+	setAge120: function(){
+        this.pie_apvhdrs.reset(this.apvhdrs._age120);
+	},
+	setAge150: function(){
+        this.pie_apvhdrs.reset(this.apvhdrs._age150);
+	},
+	/*
+	loadData: function(apvhdrs){
+		this._iDate =  _.isEmpty(this.$el.find('#range-to').val()) ? moment().format("YYYY-MM-DD") : this.$el.find('#range-to').val() ;
+		
+		this._current = [];
+		this._age30 = [];
+		this._age60 = [];
+		this._age90 = [];
+		this._age120 = [];
+		this._over120 = [];
+
+
+		var now =	new Date(this._iDate.replace(/-/g, ','));
+		var date = new Date(apvhdrs.get('due').replace(/-/g, ','));
+		//console.log(now);
+		//console.log(date);
+		//console.log(new Date(now));
+		//console.log(new Date(date));
+
+		var timeDiff = Math.abs(now.getTime() - date.getTime());
+		var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+		//console.log(apvhdrs.get('due'));
+		//console.log(diffDays);
+		//console.log(this._iDate);
+
+		if(diffDays == 0){
+			//console.log('0 mons');
+			//console.log(apvhdrs.get('due'));
+		} else if(diffDays >= 1 && diffDays <= 30){
+			//console.log('1 mons');
+			//console.log(apvhdrs.get('due'));
+		} else if(diffDays >= 31 && diffDays <= 60){
+			//console.log('2 mons');
+			//console.log(apvhdrs.get('due'));
+		} else if(diffDays >= 61 && diffDays <= 90){
+			//console.log('3 mons');
+			//console.log(apvhdrs.get('due'));
+		} else if(diffDays >= 91 && diffDays <= 120){
+			//console.log('4 mons');
+			//console.log(apvhdrs.get('due'));
+		} else if(diffDays >= 120 ){
+			//console.log('5 mons');
+			//console.log(apvhdrs.get('due'));
+		}
+
+	}
+	*/
+});

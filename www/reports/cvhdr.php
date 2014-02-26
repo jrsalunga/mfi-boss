@@ -98,12 +98,15 @@ $(document).ready(function(e) {
     <div class="stage">
 		<div class="col-sm-2 col-md-2 l-pane">
     	<ul class="nav nav-pills nav-stacked">
-		<li>
-		<a href="apvhdr">Accounts Payable</a>
-		</li>
-		<li class="active">
-		<a href="cvhdr">Check</a>
-		<li>
+            <li>
+                <a href="apvhdr">Accounts Payable</a>
+            </li>
+            <li>
+                <a href="apvhdr-age">Accounts Payable (Age)</a>
+            </li>
+            <li class="active">
+            	<a href="cvhdr">Check</a>
+            <li>
 		</ul>
     	</div>
     	<div class="col-sm-10 col-md-10 r-pane"></div>

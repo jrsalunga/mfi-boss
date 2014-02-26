@@ -14,7 +14,7 @@ RewriteRule ^login(\/.*)*$ login.php
 #RewriteRule ^AuthUserLogin(\/.*)*$ /mfi-boss/api/
 
 #/mfi-boss/www/api/AuthUserLogin
-RewriteRule ^logout(\/.*)*$ /mfi-boss/logout.php	
+RewriteRule ^logout(\/.*)*$ /logout.php	
 #RewriteRule ^projects(\/.*)*$ /index.php
 
 

@@ -54,6 +54,9 @@ require_once('../../lib/initialize.php');
 
 $(document).ready(function(e) {
 	
+	apvhdrsDue = new ApvhdrsDue();
+	Backbone.history.start();
+	
 	$("#range-to").datepicker({"dateFormat": "yy-mm-dd",
 		select: function(event, ui){
 		
@@ -123,12 +126,15 @@ $(document).ready(function(e) {
     <div class="stage">
 		<div class="col-sm-2 col-md-2 l-pane">
     	<ul class="nav nav-pills nav-stacked">
-		<li class="active">
-		<a href="apvhdr">Accounts Payable</a>
-		</li>
-		<li>
-		<a href="cvhdr">Check</a>
-		<li>
+			<li class="active">
+				<a href="apvhdr">Accounts Payable</a>
+			</li>
+            <li>
+				<a href="apvhdr-age">Accounts Payable (Age)</a>
+			</li>
+			<li>
+				<a href="cvhdr">Check</a>
+			<li>
 		</ul>
     	</div>
     	<div class="col-sm-10 col-md-10 r-pane pull-right">

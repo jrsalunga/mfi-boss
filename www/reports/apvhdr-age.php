@@ -54,6 +54,10 @@ require_once('../../lib/initialize.php');
 
 $(document).ready(function(e) {
 	
+	
+	apvhdrsAge = new ApvhdrsAge();
+	Backbone.history.start();
+	
 	$("#range-to").datepicker({"dateFormat": "yy-mm-dd",
 		select: function(event, ui){
 		
@@ -123,12 +127,15 @@ $(document).ready(function(e) {
     <div class="stage">
 		<div class="col-sm-2 col-md-2 l-pane">
     	<ul class="nav nav-pills nav-stacked">
-		<li class="active">
-		<a href="apvhdr">Accounts Payable</a>
-		</li>
-		<li>
-		<a href="cvhdr">Check</a>
-		<li>
+        	<li>
+				<a href="apvhdr">Accounts Payable</a>
+			</li>
+			<li class="active">
+				<a href="apvhdr-age">Accounts Payable (Age)</a>
+			</li>
+			<li>
+				<a href="cvhdr">Check</a>
+			<li>
 		</ul>
     	</div>
     	<div class="col-sm-10 col-md-10 r-pane pull-right">
@@ -150,40 +157,36 @@ $(document).ready(function(e) {
                             </div>
                             <div class="form-group apv-status">
                                 <div class="btn-group">
-                                  <button id="filter-all" type="button" class="btn btn-default" data-posted="2">All</button>
-                                  <button id="filter-posted" type="button" class="btn btn-default" data-posted="1">Posted</button>
-                                  <button id="filter-unposted" type="button" class="btn btn-default" data-posted="0">Unposted</button>
+                                  <button id="filter-mon-all" type="button" class="btn btn-default" data-month="6" title="All account payables">All</button>
+                                  <button id="filter-mon-0" type="button" class="btn btn-default" data-month="0" data-toggle="collapse" data-target="#collapse-age0" data-parent=".report-detail-all" title="Account payables in current day">Now</button>
+                                  <button id="filter-mon-1" type="button" class="btn btn-default" data-month="1" data-toggle="collapse" data-target="#collapse-age30" data-parent=".report-detail-all" title="Account payables age 30 days">30</button>
+                                  <button id="filter-mon-2" type="button" class="btn btn-default" data-month="2" data-toggle="collapse" data-target="#collapse-age60" data-parent=".report-detail-all" title="Account payables age 60 days">60</button>
+                                  <button id="filter-mon-3" type="button" class="btn btn-default" data-month="3" data-toggle="collapse" data-target="#collapse-age90" data-parent=".report-detail-all" title="Account payables age 90 days">90</button>
+                                  <button id="filter-mon-4" type="button" class="btn btn-default" data-month="4" data-toggle="collapse" data-target="#collapse-age120" data-parent=".report-detail-all" title="Account payables age 120 days">120</button>
+                                  <button id="filter-mon-5" type="button" class="btn btn-default" data-month="5" data-toggle="collapse" data-target="#collapse-age150" data-parent=".report-detail-all" title="Account payables age over 120 days">Over 120</button>
                                 </div>
                             </div>
                         </form>
                		</div>
                     <div id="c-pie">
-                    	<div class="c-pie-img chart">
-                    </div>
-                    <!--
-                    <div id="c-column">
-                    <div class="c-column-img">
-                    </div>
-                    </div>
-                    -->
-                	
-                </div>
+                    	<div class="c-pie-img ">
+                   		</div>
+               		</div>
+                    <div id="c-stacked-bar">
+                    	<div class="c-stacked-bar-img ">
+                   		</div>
+               		</div>
                 </div>
                 <!--
                 <div class="col-md-9" style="height: 98px;">
                 </div>
 				-->
                 <div class="col-md-7">
-                	 <div id="apvhdr-details" class="panel-group">
+                	 <div id="apvhdr-age-details">
                      	
-                        <div class="report-detail-all">
+                        <div class="report-detail-all panel-group" >
                         </div>
-                        
-                        <div class="report-detail-posted">
-                        </div>
-                        
-                        <div class="report-detail-unposted">
-                        </div>
+   
                     </div>
                 </div>
                 

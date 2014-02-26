@@ -1,7 +1,7 @@
 Highcharts.setOptions({
     chart: {
         style: {
-            fontFamily: 'tahoma'
+            fontFamily: "Helvetica"
         }
     }
 });
@@ -9,6 +9,7 @@ Highcharts.setOptions({
 var vPie = Backbone.View.extend({
 	
 	initialize: function(){
+		this.settings = this.options.settings || {title: ''};
 		this.collection.on('reset', this.render, this);	
 	},
 	render: function(){
@@ -24,13 +25,17 @@ var vPie = Backbone.View.extend({
 	            plotBackgroundColor: null,
 	            plotBorderWidth: null,
 	            plotShadow: false,
-	            height: 250,
+	            height: 300,
 	        },
 	        title: {
-	            text: ''
+	            text: this.settings.title,
+	            margin: 2,
+	            style: {
+                	fontSize: '14px'
+            	}
 	        },
 	        tooltip: {
-	    	    pointFormat: '{series.name}: <b> {point.amount} </b> ({point.percentage:.2f}%)'
+	    	    pointFormat: '{series.name}: <b>  {point.amount} </b> ({point.percentage:.2f}%)'
 	        },
 	        plotOptions: {
 	            pie: {
@@ -40,7 +45,7 @@ var vPie = Backbone.View.extend({
 	                    enabled: true,
 	                    color: '#000000',
 	                    connectorColor: '#ccc',
-	                    format: '<b>{point.code}</b>: {point.percentage:.2f} %'
+	                    format: '{point.code}: {point.percentage:.2f} %'
 	                },
 	                point: {
                     events: {
@@ -162,7 +167,7 @@ var vApvLine = Backbone.View.extend({
 		.highcharts({
             chart: {
                 zoomType: 'x',
-                height: 250,
+                height: 300,
                 spacingRight: 0
             },
             title: {
@@ -501,7 +506,7 @@ var vColumn =  Backbone.View.extend({
 		.highcharts({
             chart: {
                 type: 'column',
-                height: 250,
+                height: 300,
             },
             title: {
                 text: ''
@@ -537,8 +542,8 @@ var vColumn =  Backbone.View.extend({
             tooltip: {
                 formatter: function() {
                     return '<b>'+ this.x +'</b><br/>'+
-                        this.series.name +': '+ this.y +'<br/>'+
-                        'Total: '+ this.point.stackTotal;
+                        this.series.name +': '+ accounting.formatMoney(this.y,"", 2,",") +'<br/>'+
+                        'Total: '+ accounting.formatMoney(this.point.stackTotal,"", 2,",");
                 }
             },
             plotOptions: {
@@ -633,4 +638,129 @@ var vColumn =  Backbone.View.extend({
 		
 	}
 
+});
+
+
+var vStackedBar = Backbone.View.extend({
+	initialize: function(){
+		this.settings = this.options.settings || {title: ''};
+		this.listenTo(this.collection, 'reset', this.render);
+	},
+	render: function(){
+
+		this._data = [0, 0, 0, 0, 0, 0];
+		this.categories = ['Current', 'Age 30', 'Age 60', 'Age 90', 'Age 120', 'Over 120'];
+
+
+		this.setAll();
+
+		this.$el.find('.c-stacked-bar-img')
+        .highcharts({
+            chart: {
+                type: 'column',
+                height: 300
+            },
+            title: {
+	            text: this.settings.title,
+	            style: {
+                	fontSize: '14px'
+            	}
+	        },
+            xAxis: {
+                categories: this.categories
+                //categories: this.categories
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Total Amount'
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.x +'</b><br/>'+
+                       // this.series.name +': '+ accounting.formatMoney(this.y,"", 2,",") +'<br/>'+
+                        'Total: '+ accounting.formatMoney(this.point.stackTotal,"", 2,",");
+                }
+            },
+            legend: {
+            	enabled: false,
+                backgroundColor: '#FFFFFF',
+                reversed: true
+            },
+            plotOptions: {
+                series: {
+                    stacking: 'normal'
+                }
+            },
+                series: [
+	                {
+		                data: this._data
+		            }
+            	]
+        });
+
+	},
+	setAll: function(){
+		//console.log(this.collection.toJSON());
+
+		this.collection.each(this.loadData, this);
+		
+	},
+	loadData: function(apvhdrs){
+		this._iDate =  _.isEmpty($('#range-to').val()) ? moment().format("YYYY-MM-DD") : $('#range-to').val() ;
+		
+		//this._current = [];
+		//this._age30 = [];
+		//this._age60 = [];
+		//this._age90 = [];
+		//this._age120 = [];
+		//this._over120 = [];
+
+
+		var now =	new Date(this._iDate.replace(/-/g, ','));
+		var date = new Date(apvhdrs.get('due').replace(/-/g, ','));
+		//console.log(now);
+		//console.log(date);
+		//console.log(new Date(now));
+		//console.log(new Date(date));
+
+		var timeDiff = Math.abs(now.getTime() - date.getTime());
+		var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+		//console.log(apvhdrs.get('totamount'));
+		//console.log(diffDays);
+		//console.log(this._iDate);
+
+		if(diffDays == 0){
+			//console.log('0 mons');
+			//console.log(apvhdrs.get('due'));
+			this._data[0] += parseFloat(apvhdrs.get('totamount'));
+
+		} else if(diffDays >= 1 && diffDays <= 30){
+			//console.log('1 mons');
+			//console.log(apvhdrs.get('due'));
+			this._data[1] += parseFloat(apvhdrs.get('totamount'));
+
+		} else if(diffDays >= 31 && diffDays <= 60){
+			//console.log('2 mons');
+			//console.log(apvhdrs.get('due'));
+			this._data[2] += parseFloat(apvhdrs.get('totamount'));
+
+		} else if(diffDays >= 61 && diffDays <= 90){
+			//console.log('3 mons');
+			//console.log(apvhdrs.get('due'));
+			this._data[3] += parseFloat(apvhdrs.get('totamount'));
+
+		} else if(diffDays >= 91 && diffDays <= 120){
+			//console.log('4 mons');
+			//console.log(apvhdrs.get('due'));
+			this._data[4] += parseFloat(apvhdrs.get('totamount'));
+
+		} else if(diffDays >= 120 ){
+			//console.log('5 mons');
+			//console.log(apvhdrs.get('due'));
+			this._data[5] += parseFloat(apvhdrs.get('totamount'));
+
+		}
+	}
 });
