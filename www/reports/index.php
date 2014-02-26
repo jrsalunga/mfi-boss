@@ -1,6 +1,6 @@
 <?php
 require_once('../../lib/initialize.php');
-!$session->is_logged_in() ? redirect_to("login"): "";
+!$session->is_logged_in() ? redirect_to("../login"): "";
 ?>
 <!DOCTYPE HTML>
 <html lang="en-ph">
