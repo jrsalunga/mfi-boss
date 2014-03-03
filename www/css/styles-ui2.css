@@ -477,7 +477,13 @@ background-repeat: no-repeat;
 	border-color: #d6e9c6;
 }
 
+.apv-status > .btn-group > button:not(:last-child) {
+	
+} 
 
+.list-group-item-info > span {
+	/*font-size: 15px; */
+}
 
 
 
@@ -501,3 +507,4 @@ background-repeat: no-repeat;
     line-height: 45px;
     margin: 0;
 }
+

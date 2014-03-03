@@ -151,19 +151,32 @@ $(document).ready(function(e) {
                                 <div class="input-group">
                                   <input id="range-to" type="text" class="form-control" placeholder="YYYY-MM-DD">
                                   <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-date-range" tabindex="-1">Go</button>
+                                    <button type="button" class="btn btn-success btn-date-range" tabindex="-1">Go</button>
                                   </div>
                                 </div>
                             </div>
                             <div class="form-group apv-status">
-                                <div class="btn-group">
-                                  <button id="filter-all" type="button" class="btn btn-default" data-posted="2">All</button>
-                                  <button id="filter-posted" type="button" class="btn btn-default" data-posted="1">Posted</button>
-                                  <button id="filter-unposted" type="button" class="btn btn-default" data-posted="0">Unposted</button>
+                                <div class="btn-group btn-group-justified">
+                                	<div class="btn-group">
+                                  	<button id="filter-all" type="button" class="btn btn-info" data-posted="2">All</button>
+                                  	</div>
+                                    <div class="btn-group">
+                                  	<button id="filter-posted" type="button" class="btn btn-info" data-posted="1">Posted</button>
+                                  	</div>
+                                    <div class="btn-group">
+                                  	<button id="filter-unposted" type="button" class="btn btn-info" data-posted="0">Unposted</button>
+                                	</div>
                                 </div>
                             </div>
                         </form>
                		</div>
+                    <div>
+                    	<ul id="total-list" class="list-group">
+                        	<li class="list-group-item">All: <span class="pull-right total-list-a"></span></li>
+                          	<li class="list-group-item">Posted: <span class="pull-right total-list-p"></span></li>
+                          	<li class="list-group-item">Unposted: <span class="pull-right total-list-u"></span></li>
+                        </ul>
+                    </div>
                     <div id="c-pie">
                     	<div class="c-pie-img chart">
                     </div>

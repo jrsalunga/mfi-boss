@@ -674,7 +674,13 @@ var vStackedBar = Backbone.View.extend({
                 min: 0,
                 title: {
                     text: 'Total Amount'
-                }
+                },
+                stackLabels: {
+	                style: {
+	                    color: 'black'
+	                },
+	                enabled: true
+	            }
             },
             tooltip: {
                 formatter: function() {
@@ -690,7 +696,7 @@ var vStackedBar = Backbone.View.extend({
             },
             plotOptions: {
                 series: {
-                    stacking: 'normal'
+                    stacking: 'normal'	
                 }
             },
                 series: [

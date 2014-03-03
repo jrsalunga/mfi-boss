@@ -152,19 +152,33 @@ $(document).ready(function(e) {
                                 <div class="input-group">
                                   <input id="range-to" type="text" class="form-control" placeholder="YYYY-MM-DD">
                                   <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-date-range" tabindex="-1">Go</button>
+                                    <button type="button" class="btn btn-success btn-date-range" tabindex="-1">Go</button>
                                   </div>
                                 </div>
                             </div>
                             <div class="form-group apv-status">
                                 <div class="btn-group">
-                                  <button id="filter-mon-all" type="button" class="btn btn-default" data-month="6" title="All account payables">All</button>
-                                  <button id="filter-mon-0" type="button" class="btn btn-default" data-month="0" data-toggle="collapse" data-target="#collapse-age0" data-parent=".report-detail-all" title="Account payables in current day">Now</button>
-                                  <button id="filter-mon-1" type="button" class="btn btn-default" data-month="1" data-toggle="collapse" data-target="#collapse-age30" data-parent=".report-detail-all" title="Account payables age 30 days">30</button>
-                                  <button id="filter-mon-2" type="button" class="btn btn-default" data-month="2" data-toggle="collapse" data-target="#collapse-age60" data-parent=".report-detail-all" title="Account payables age 60 days">60</button>
-                                  <button id="filter-mon-3" type="button" class="btn btn-default" data-month="3" data-toggle="collapse" data-target="#collapse-age90" data-parent=".report-detail-all" title="Account payables age 90 days">90</button>
-                                  <button id="filter-mon-4" type="button" class="btn btn-default" data-month="4" data-toggle="collapse" data-target="#collapse-age120" data-parent=".report-detail-all" title="Account payables age 120 days">120</button>
-                                  <button id="filter-mon-5" type="button" class="btn btn-default" data-month="5" data-toggle="collapse" data-target="#collapse-age150" data-parent=".report-detail-all" title="Account payables age over 120 days">Over 120</button>
+                                	<div class="btn-group">
+                                    <button id="filter-mon-all" type="button" class="btn btn-info" data-month="6" title="All account payables">All</button>
+                                  	</div>
+                                    <div class="btn-group">
+                                    <button id="filter-mon-0" type="button" class="btn btn-info" data-month="0" data-toggle="collapse" data-target="#collapse-age0" data-parent=".report-detail-all" title="Account payables in current day">Now</button>
+                                  	</div>
+                                    <div class="btn-group">
+                                  	<button id="filter-mon-1" type="button" class="btn btn-info" data-month="1" data-toggle="collapse" data-target="#collapse-age30" data-parent=".report-detail-all" title="Account payables age 30 days">30</button>
+                                  	</div>
+                                    <div class="btn-group">
+                                    <button id="filter-mon-2" type="button" class="btn btn-info" data-month="2" data-toggle="collapse" data-target="#collapse-age60" data-parent=".report-detail-all" title="Account payables age 60 days">60</button>
+                                  	</div>
+                                    <div class="btn-group">
+                                  	<button id="filter-mon-3" type="button" class="btn btn-info" data-month="3" data-toggle="collapse" data-target="#collapse-age90" data-parent=".report-detail-all" title="Account payables age 90 days">90</button>
+                                  	</div>
+                                    <div class="btn-group">
+                                    <button id="filter-mon-4" type="button" class="btn btn-info" data-month="4" data-toggle="collapse" data-target="#collapse-age120" data-parent=".report-detail-all" title="Account payables age 120 days">120</button>
+                                  	</div>
+                                    <div class="btn-group">
+                                  	<button id="filter-mon-5" type="button" class="btn btn-info" data-month="5" data-toggle="collapse" data-target="#collapse-age150" data-parent=".report-detail-all" title="Account payables age over 120 days">Over 120</button>
+                                	</div>
                                 </div>
                             </div>
                         </form>
