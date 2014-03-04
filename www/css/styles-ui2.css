@@ -468,6 +468,11 @@ background-repeat: no-repeat;
 
 
 /********************* bootstrap overwrite **************/
+.navbar-default {
+	background-color: #f2f3f2;
+	border-color: #e5e5e5; /*#e7e7e7;*/
+}
+
 .panel-body {
 	padding: 0px;	
 }

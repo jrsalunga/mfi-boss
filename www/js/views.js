@@ -452,17 +452,17 @@ var ReportApvhdr = Backbone.View.extend({
 		})
 
 		
-		this.pie = new vPie({el: "#c-pie",collection: this.apvhdrs});
+		this.pie = new vPie({el: "#c-pie",collection: this.apvhdrs, settings: {title: 'Percentage per Supplier'}});
 		this.apvLine = new vApvLine({el: "#c-line", collection: this.collection});
 		this.column = new vColumn({el: '#c-column' , collection: this.apvhdrs});
 		//this.apvReports = new ApvReports({el: '#apvhdr-report-list' , collection: this.apvhdrs});
 		this.apvhdrDetails = new ApvhdrDetails({el: '#apvhdr-details' , collection: this.collection});
-		
+		/*
 		console.log(this.pie);
 		console.log(this.apvLine);
 		console.log(this.column);
 		console.log(this.apvhdrDetails);
-
+		*/
 		this.$el.find('#range-to').val(moment().format("YYYY-MM-DD"));
 		
 	},
