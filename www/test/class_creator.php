@@ -4,7 +4,7 @@ include_once('../../lib/initialize.php');
 
 
 
-$sql = "DESCRIBE customer";
+$sql = "DESCRIBE vapvdtl";
 $rows = $database->query($sql);
 
 while($row = $database->fetch_row($rows)) {

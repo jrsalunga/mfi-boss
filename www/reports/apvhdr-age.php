@@ -132,7 +132,10 @@ $(document).ready(function(e) {
 				<a href="apvhdr">Accounts Payable</a>
 			</li>
 			<li class="active">
-				<a href="apvhdr-age">Accounts Payable (Age)</a>
+				<a href="apvhdr-age">Accounts Payable (Aged)</a>
+			</li>
+            <li>
+				<a href="ap-project">Accounts Payable (Project)</a>
 			</li>
 			<li>
 				<a href="cvhdr">Check</a>

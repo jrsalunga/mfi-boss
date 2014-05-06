@@ -6,7 +6,7 @@ require_once(ROOT.DS.'classes'.DS.'database.php');
 class Project extends DatabaseObject{
 	
 	protected static $table_name="project";
-	protected static $db_fields = array('id', 'code' ,'descriptor' ,'customerid' ,'salesmanid' ,'location' ,'typeid' ,'datestart' ,'dateend' ,'dateendx' ,'amount' ,'balance' ,'notes');
+	protected static $db_fields = array('id', 'code' ,'descriptor' ,'customerid' ,'salesmanid' ,'location' ,'type' ,'datestart' ,'dateend' ,'dateendx' ,'amount' ,'balance' ,'notes');
 	
 	/*
 	* Database related fields
@@ -17,7 +17,7 @@ class Project extends DatabaseObject{
 	public $customerid;
 	public $salesmanid;
 	public $location;
-	public $typeid;
+	public $type;
 	public $datestart;
 	public $dateend;
 	public $dateendx;
@@ -35,6 +35,7 @@ class Project extends DatabaseObject{
 			return parent::find_by_sql("SELECT * FROM ".static::$table_name." ".$order);
 		}
   	}
+	
 	
 	
 }

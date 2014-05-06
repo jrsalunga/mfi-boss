@@ -68,14 +68,17 @@ require_once('../../lib/initialize.php');
 		<div class="col-sm-2 col-md-2 l-pane">
     	<ul class="nav nav-pills nav-stacked">
             <li>
-            	<a href="apvhdr">Accounts Payable</a>
-            </li>
-            <li>
-				<a href="apvhdr-age">Accounts Payable (Age)</a>
+				<a href="apvhdr">Accounts Payable</a>
+			</li>
+			<li>
+				<a href="apvhdr-age">Accounts Payable (Aged)</a>
 			</li>
             <li>
-            	<a href="cvhdr">Check</a>
-            <li>
+				<a href="ap-project">Accounts Payable (Project)</a>
+			</li>
+			<li>
+				<a href="cvhdr">Check</a>
+			<li>
 		</ul>
     	</div>
     	<div class="col-sm-10 col-md-10 r-pane">

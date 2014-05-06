@@ -490,6 +490,18 @@ background-repeat: no-repeat;
 	/*font-size: 15px; */
 }
 
+.panel-group-child {
+	margin-bottom: 0px;
+}
+
+.project-list-parent {
+	padding-left: 20px;
+}
+
+.project-list-parent .table {
+	margin-bottom: 0;
+}
+
 
 
 /********************* layout stuff **************/
