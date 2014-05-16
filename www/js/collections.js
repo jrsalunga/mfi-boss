@@ -106,3 +106,19 @@ var Apvhdrs = Backbone.Collection.extend({
 
 var apvhdrs = new Apvhdrs();
 
+var hccPie = Backbone.Collection.extend({
+	model: hcmPie,
+	initialize: function(){
+
+	},
+	getFieldTotal: function(field){
+		return this.reduce(function(memo,value){
+
+			
+			return memo + parseFloat(value.get(field));
+			memo = accounting.toFixed(memo,2);
+			memo = parseFloat(memo);
+		}, 0)
+	},
+});
+

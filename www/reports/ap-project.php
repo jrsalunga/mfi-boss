@@ -4,33 +4,60 @@ require_once('../../lib/initialize.php');
 
 $cleanUrl->setParts('type');
 
+$q = $_GET['q'];
 
-switch($type){
-	case $type == ' ':
-		$sql = 'SELECT b.descriptor, sum(a.amount) as amount, b.type, b.id FROM apvdtl a, project b WHERE a.type = 1 AND a.projectid = b.id GROUP BY a.projectid ORDER BY b.descriptor';
-		break;
-	case $type == 'singles':
-		$sql = 'SELECT b.descriptor, sum(a.amount) as amount, b.type, b.id FROM apvdtl a, project b WHERE a.type = 1 AND a.projectid = b.id AND b.type = 1 GROUP BY a.projectid ORDER BY b.type, 1';
-		break;
-	case $type == 'hirise':
-		$sql = 'SELECT b.descriptor, sum(a.amount) as amount, b.type, b.id FROM apvdtl a, project b WHERE a.type = 1 AND a.projectid = b.id AND b.type = 2 GROUP BY a.projectid ORDER BY b.type, 1';
-		break;
-	
+if(empty($q)){
+	switch($type){
+		case $type == ' ':
+			$sql = 'SELECT b.descriptor, sum(a.amount) as amount, b.type, b.id FROM apvdtl a, project b WHERE a.type = 1 AND a.projectid = b.id GROUP BY a.projectid ORDER BY b.descriptor';
+			
+			$sql_pie = "SELECT c.code AS code, c.descriptor , SUM(a.amount) AS amount, a.accountid as id ";
+			$sql_pie .= "FROM apvdtl a INNER JOIN project b ON a.projectid = b.id ";
+			$sql_pie .= "INNER JOIN account c ON a.accountid = c.id ";
+			$sql_pie .= "GROUP BY c.id ";
+			break;
+		case $type == 'singles':
+			$sql = 'SELECT b.descriptor, sum(a.amount) as amount, b.type, b.id FROM apvdtl a, project b WHERE a.type = 1 AND a.projectid = b.id AND b.type = 1 GROUP BY a.projectid ORDER BY b.type, 1';
+			
+			$sql_pie = "SELECT c.code AS code, c.descriptor , SUM(a.amount) AS amount, a.accountid as id ";
+			$sql_pie .= "FROM apvdtl a INNER JOIN project b ON a.projectid = b.id ";
+			$sql_pie .= "INNER JOIN account c ON a.accountid = c.id ";
+			$sql_pie .= "WHERE b.type = 1 GROUP BY c.id ";
+			break;
+		case $type == 'hirise':
+			$sql = 'SELECT b.descriptor, sum(a.amount) as amount, b.type, b.id FROM apvdtl a, project b WHERE a.type = 1 AND a.projectid = b.id AND b.type = 2 GROUP BY a.projectid ORDER BY b.type, 1';
+			
+			$sql_pie = "SELECT c.code AS code, c.descriptor , SUM(a.amount) AS amount, a.accountid as id ";
+			$sql_pie .= "FROM apvdtl a INNER JOIN project b ON a.projectid = b.id ";
+			$sql_pie .= "INNER JOIN account c ON a.accountid = c.id ";
+			$sql_pie .= "WHERE b.type = 2 GROUP BY c.id ";
+			break;	
+	}
+} else {
+	$sql  = 'SELECT b.descriptor, sum(a.amount) as amount, b.type, b.id ';
+	$sql .= 'FROM apvdtl a, project b ';
+	$sql .= "WHERE a.type = 1 AND a.projectid = b.id AND b.type = 2 AND b.descriptor LIKE '%". $q ."%' ";
+	$sql .= 'GROUP BY a.projectid ORDER BY b.type, 1';
 }
 
 $projects = Project::find_by_sql($sql);
 
-$tot_singles = Apvdtl::find_by_sql('SELECT sum(a.amount) as amount FROM apvdtl a WHERE a.type = 1');
+
+	
+$pie = HCPie::find_by_sql($sql_pie);
+//echo json_encode($pie);
+	
+
+$tot_singles = Apvdtl::find_by_sql('SELECT sum(a.amount) as amount FROM apvdtl a, project b WHERE b.type = 1 AND a.projectid = b.id');
 $tot_singles = array_shift($tot_singles);
-$tot_hirise = Apvdtl::find_by_sql('SELECT sum(a.amount) as amount FROM apvdtl a WHERE a.type = 2');
+$tot_hirise = Apvdtl::find_by_sql('SELECT sum(a.amount) as amount FROM apvdtl a, project b WHERE b.type = 2 AND a.projectid = b.id');
 $tot_hirise = array_shift($tot_hirise);
 
 
 ?>
 
 <!DOCTYPE HTML>
-<html lang="en-ph">
-<head>
+<html lang="en-ph"><head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -86,7 +113,15 @@ $tot_hirise = array_shift($tot_hirise);
 
 $(document).ready(function(e) {
 	
-	apvhdrsDue = new ApvhdrsDue();
+	//apvhdrsDue = new ApvhdrsDue();
+	
+	
+	var hccpie = new hccPie(<?=json_encode($pie)?>);
+	
+	var hcvpie = new hcvPie({el: "#c-pie2", collection: hccpie, settings: {title: 'Accounts Percentage'}});
+	console.log(hcvpie);
+	hcvpie.render();
+	
 	Backbone.history.start();
 	
 	$("#range-to").datepicker({"dateFormat": "yy-mm-dd",
@@ -165,7 +200,7 @@ $(document).ready(function(e) {
 				<a href="<?=$relativeslash?>apvhdr-age">Accounts Payable (Aged)</a>
 			</li>
             <li class="active">
-				<a href="<?=$relativeslash?>ap-project">Accounts Payable (Project)</a>
+				<a href="<?=$relativeslash?>ap-project">AP (Project)</a>
 			</li>
 			<li>
 				<a href="<?=$relativeslash?>cvhdr">Check</a>
@@ -175,6 +210,11 @@ $(document).ready(function(e) {
     	</div>
     	<div class="col-sm-10 col-md-10 r-pane pull-right">
         	<section id="apvhdr-report">
+            <div class="row">
+            	<div class="col-md-12 title">
+                <h1>Account Payables by Project</h1>
+                </div>
+            </div>
         	<div class="row">
             	
             	
@@ -195,18 +235,38 @@ $(document).ready(function(e) {
                     </div>
                     <div>
                     	<ul id="total-list" class="list-group">
-                        	<li class="list-group-item <?=empty($type)? 'list-group-item-info':''?>">All: 
+                        	<li class="list-group-item <?=empty($type)? 'list-group-item-info':''?>">
+                            	All:
+                                <span class="pull-right pct">
+                                &nbsp;
+                                </span> 
                             	<span class="pull-right total-list-a"><?=number_format($tot_singles->amount + $tot_hirise->amount, 2)?></span>
                             </li>
-                          	<li class="list-group-item <?=($type=='singles')?'list-group-item-info':''?>">Singles: 
-                            	<span class="pull-right total-list-p"><?=number_format($tot_singles->amount, 2)?></span>
+                          	<li class="list-group-item <?=($type=='singles')?'list-group-item-info':''?>">
+                            	Singles:
+                                <span class="pull-right pct">
+                                	<em><?=number_format(($tot_singles->amount*100)/($tot_singles->amount + $tot_hirise->amount),2)?>%</em> 
+                                </span>
+                            	<span class="pull-right total-list-p"> 
+									<?=number_format($tot_singles->amount, 2)?>
+                              	</span>
                           	</li>
-                          	<li class="list-group-item <?=($type=='hirise')?'list-group-item-info':''?>">Hi Rise: 
-                            	<span class="pull-right total-list-u"><?=number_format($tot_hirise->amount, 2)?></span>
+                          	<li class="list-group-item <?=($type=='hirise')?'list-group-item-info':''?>">
+                            	Hi Rise:
+                                <span class="pull-right pct">
+                                	<em><?=number_format(($tot_hirise->amount*100)/($tot_singles->amount + $tot_hirise->amount),2)?>%</em>
+                               	</span> 
+                            	<span class="pull-right total-list-u">
+									<?=number_format($tot_hirise->amount, 2)?>
+                                </span>
+                                
                             </li>
                         </ul>
                     </div>
-
+					<div id="c-pie2">
+						<div class="c-pie-img chart" data-highcharts-chart="1">
+                        </div>
+                   	</div>
                 
                 	
   
@@ -230,7 +290,7 @@ $(document).ready(function(e) {
 								//echo $project->descriptor .'  <em>('. number_format($project->amount,2) .')</em><br>';								
 								echo '<div class="panel panel-default">';
                        			echo '<div class="panel-heading">';
-                            	echo '<h4 class="panel-title"><span style="color: #aaa;" class="glyphicon ';
+                            	echo '<h4 class="panel-title"><span class="glyphicon ';
 								echo $project->type == 2 ? 'glyphicon-tower':'glyphicon-home';
 								echo '"></span> ';
 								echo '<a href="#collapse-'.$project->id.'" class="collapsed" data-parent="#project-list" data-toggle="collapse">'.$project->descriptor.'</a> ';
@@ -240,15 +300,15 @@ $(document).ready(function(e) {
 								echo '<div id="collapse-'.$project->id.'" class="panel-collapse collapse" style="height: 0px;">';
 								echo '<div class="panel-body project-list-parent">';
 									
-
+									echo '<div id="account-list-'.$project->id.'" class="panel-group panel-group-child">';
 									foreach($apvdtls as $apvdtl){
 										$sql = "SELECT * FROM vapvdtl WHERE projectid='".$project->id."' "; 
 										$sql .= "AND accountid = '".$apvdtl->accountid."' ORDER BY date";
 										$apvdtls1 = vApvdtl::find_by_sql($sql);
 										
-										echo '<div id="account-list-'.$project->id.'" class="panel-group panel-group-child">';
+										
 										echo '<div class="panel panel-default">';
-										echo '<div class="panel-heading">';
+										echo '<div class="panel-heading panel-'.$apvdtl->accountid.'">';
 										echo '<h4 class="panel-title">';
 										echo '<a href="#collapse-'.$project->id.'-'.$apvdtl->accountid.'" class="collapsed" data-parent="#account-list-'.$project->id.'" data-toggle="collapse">'.$apvdtl->account.'</a> ';
 										echo '<span class="badge">'.$database->affected_rows().'</span>';
@@ -258,14 +318,14 @@ $(document).ready(function(e) {
 										echo '<div class="panel-body">';
 										
 										
-										echo '<div><table class="table table-striped tb-data">';
+										echo '<div><table class="table table-striped apv-list">';
 										//echo '<thead><tr><th>APV Ref No</th><th>Date</th><th>Amount</th></tr></thead>';
 										echo '<tbody>';
 										foreach($apvdtls1 as $apvdtl1){
 											echo '<tr>';
 											//echo '<td>'.$apvdtl1->account .'</td>';
 											echo '<td><a href="http://mfi.com/transactions/accounts-payable-print/'.$apvdtl1->apvhdrid.'" target="_blank">'.$apvdtl1->refno .'</a></td>';
-											echo '<td>'.$apvdtl1->date .'</td>';
+											echo '<td>'. date('F j, Y', strtotime($apvdtl1->date)) .'</td>';
 											echo '<td style="text-align:right;">'. number_format($apvdtl1->amount,2) .'</td>';	
 											echo '</tr>';
 										}	
@@ -273,9 +333,9 @@ $(document).ready(function(e) {
 										
 										
 										echo '</div></div></div>';
-										echo '</div>';
+										
 									}	
-								
+									echo '</div>';
 									
 								
 								/*

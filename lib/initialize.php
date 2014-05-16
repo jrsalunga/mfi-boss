@@ -72,7 +72,7 @@ require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.vproject.php');
 
 
 
-
+require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.hc.pie.php');
 
 require_once(ROOT.DS.'classes'.DS.'class.cleanurl.php');
 

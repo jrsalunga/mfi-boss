@@ -35,6 +35,11 @@ body {
 	
 }
 
+.title h1 {
+	margin: 0 0 10px 0;
+	font-size: 20px;
+}
+
 /****** overide bootstrap***/
 
 .has-error .validation-error-block {
@@ -465,6 +470,12 @@ background-repeat: no-repeat;
 	color: #333;
 }
 
+#total-list .pct {
+	color: #aaa;
+	width: 60px;
+	text-align: right;
+}
+
 
 
 /********************* bootstrap overwrite **************/
@@ -478,6 +489,15 @@ background-repeat: no-repeat;
 }
 
 .panel-heading.selected {
+	transition: all 130ms ease-in-out 0s;
+	
+	background-color: #dff0d8;
+	border-color: #d6e9c6;
+}
+
+.panel-heading.hover {
+	transition: all 130ms ease-in-out 0s;
+	
 	background-color: #dff0d8;
 	border-color: #d6e9c6;
 }
@@ -490,17 +510,91 @@ background-repeat: no-repeat;
 	/*font-size: 15px; */
 }
 
+.panel-title .glyphicon-tower,
+.panel-title .glyphicon-home {
+	color: #aaa;
+}
+
+
+#project-list .panel-title {
+    font-size: 14px;
+}
+
+#project-list a:hover {
+    text-decoration: none;
+}
+
+
+#project-list > .panel > .panel-heading > .panel-title,
+#project-list > .panel > .panel-heading > .panel-title > a.collapsed,
+#project-list > .panel > .panel-heading > .panel-title > a.collapsed + .tot {
+	font-weight:bold;
+	/*color: #2f6f9f;*/
+	color: #555;
+}
+
+#project-list > .panel > .panel-heading > .panel-title > a,
+#project-list > .panel > .panel-heading > .panel-title > a + .tot,
+#project-list > .panel > .panel-heading > .panel-title > a:hover,
+#project-list > .panel > .panel-heading > .panel-title > a:hover + .tot {
+	color: #2f6f9f;
+}
+
+
+
+
 .panel-group-child {
 	margin-bottom: 0px;
 }
 
+
+.panel-group-child.panel-group .panel + .panel {
+    margin-top: 0;
+}
+
+
+.panel-group-child .panel {
+	border-radius: 0;
+	border: 0px solid #fff;
+}
+
+.panel-group-child .panel .panel-heading {
+	border-radius: 0;
+	background-color: #f4f8fa;
+}
+
+
+.panel-group-child .panel-heading + .panel-collapse .panel-body {
+    border-top: 0px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+}
+
+
+.panel-group-child .badge {
+	font-size: 10px;
+	background-color: #aaa;	
+}
+
+
+
 .project-list-parent {
-	padding-left: 20px;
+	padding-left: 0px;
 }
 
 .project-list-parent .table {
 	margin-bottom: 0;
 }
+
+.panel-group-child .table tr td {
+	padding: 8px 15px;
+	color: #777;
+}
+
+.panel-group-child .table tr td:nth-child(2) {
+	font-size: 13px;
+}
+
+
 
 
 

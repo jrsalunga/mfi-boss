@@ -6,7 +6,7 @@ require_once(ROOT.DS.'classes'.DS.'database.php');
 class vApvdtl extends DatabaseObject{
 	
 	protected static $table_name="vapvdtl";
-	protected static $db_fields = array('id', 'apvhdrid' ,'accountid' ,'type' ,'projectid' ,'amount' ,'refno' ,'account' ,'project' ,'date');
+	protected static $db_fields = array('id', 'apvhdrid' ,'accountid' ,'type' ,'projectid' ,'amount' ,'refno' ,'account' ,'account_code' ,'project' ,'date');
 	
 	/*
 	* Database related fields
@@ -19,6 +19,7 @@ class vApvdtl extends DatabaseObject{
 	public $amount;
 	public $refno;
 	public $account;
+	public $account_code;
 	public $project;
 	public $date;
 	

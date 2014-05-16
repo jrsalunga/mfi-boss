@@ -6,6 +6,140 @@ Highcharts.setOptions({
     }
 });
 
+var hcvPie = Backbone.View.extend({
+	initialize: function(){
+		
+		this.settings = this.options.settings || {title: ''};
+		this.collection.on('reset', this.render, this);
+	},
+	render: function(){
+		this.hData = [];
+		//console.log(this.collection);
+		this.loadData2();
+
+		
+		this.$el.find('.c-pie-img')
+		.highcharts({
+	        chart: {
+	            plotBackgroundColor: null,
+	            plotBorderWidth: null,
+	            plotShadow: false,
+	            height: 300,
+	        },
+	        title: {
+	            
+	            text: this.settings.title,
+	            margin: 2,
+	            style: {
+                	fontSize: '14px'
+            	}
+	        },
+	        tooltip: {
+	    	    pointFormat: '{series.name}: <b>  {point.amount} </b> ({point.percentage:.2f}%)'
+	        },
+	        plotOptions: {
+	            pie: {
+	                allowPointSelect: true,
+	                cursor: 'pointer',
+	                dataLabels: {
+	                    enabled: true,
+	                    color: '#000000',
+	                    connectorColor: '#ccc',
+	                    format: '{point.code}: {point.percentage:.2f} %'
+	                },
+	                point: {
+                    events: {
+                        mouseOver: function() {    
+                        	$('.panel-'+this.id).addClass('selected');            	
+                            $('.panel-'+this.id).parent().parent()
+                            .parent().parent().siblings().addClass('selected');
+                        },
+                        mouseOut: function() {
+                        	$('.panel-'+this.id).removeClass('selected');  
+                            $('.panel-'+this.id).parent().parent()
+                            .parent().parent().siblings().removeClass('selected');
+                        },
+                        click: function(event) {
+                        	console.log(this);
+                        	//$('.panel-'+this.id).toggleClass('hover');  
+                            var panel = $('.panel-'+this.id).parent().parent().parent().parent().siblings();
+
+                           	// $('#project-list > .panel > .panel-heading').removeClass('hover');
+                           	console.log($('#project-list > .panel > .hover').length);
+
+							if(panel.hasClass('hover') && ($('#project-list > .panel > .hover').length == 0)){
+                    			///$('#project-list > .panel > .panel-heading').removeClass('hover');
+                            	console.log('=1');
+                            	
+                            	$('#project-list > .panel > .panel-heading').removeClass('hover');
+                            	panel.addClass('hover');
+                            } else if(panel.hasClass('hover') && ($('#project-list > .panel > .hover').length > 0)) {
+                            	panel.removeClass('hover');
+                            	console.log('=2');
+                            } else {
+                            	console.log('=3');
+                            	panel.addClass('hover');
+                            }
+
+                        	
+                        	
+
+                        	
+
+                    	}
+                    }
+                },
+	            }
+	        },
+	        series: [{
+	            type: 'pie',
+	            name: 'Total Amount',
+	            data: this.hData2
+	        }]
+	    });
+
+	},
+	loadData2: function(){
+		var that = this;
+		var itemByCode = this.collection.groupBy(function(m){
+		     return m.get('code');
+		});
+		console.log(itemByCode);
+
+		var sumAmount = function(total, item){
+		    return total += parseFloat(item.get('amount'));; 
+		}
+
+		var getObj = function(total, item){
+
+			var x = {
+				code: item.get('code'),
+				descriptor: item.get('descriptor'),
+				id: item.get('id'),
+
+			}
+
+			return x;
+		}
+
+		var sums = _.map( itemByCode, function(suppliers, supplier){
+			var o = suppliers.reduce(getObj, 0);
+			var amt = suppliers.reduce(sumAmount, 0);
+		    var pct = (amt/that.collection.getFieldTotal('amount'))*100;
+		    var x = {
+		        name: o.descriptor,
+		        amount: accounting.formatMoney(amt,"", 2,","),
+		        y: parseFloat(accounting.toFixed(pct,2)),
+		        code: supplier,
+		        id: o.id
+		    }
+		    return x;
+		});
+		this.hData2 = sums; 
+		//console.log(this.hData2);
+	}
+});
+
 var vPie = Backbone.View.extend({
 	
 	initialize: function(){

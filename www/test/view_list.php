@@ -22,7 +22,7 @@ ON a.supplierid = b.id";
 
 
 $vApvdtl = "SELECT a.apvhdrid, a.accountid, a.type, a.projectid, a.amount, a.id,
-d.refno, b.descriptor as account, c.descriptor as project, d.date
+d.refno, b.descriptor as account, b.code as account_code, c.descriptor as project, d.date
 FROM apvdtl a
 LEFT JOIN account b
 ON a.accountid = b.id
