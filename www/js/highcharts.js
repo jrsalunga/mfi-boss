@@ -80,12 +80,6 @@ var hcvPie = Backbone.View.extend({
                             	console.log('=3');
                             	panel.addClass('hover');
                             }
-
-                        	
-                        	
-
-                        	
-
                     	}
                     }
                 },

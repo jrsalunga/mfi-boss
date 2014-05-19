@@ -120,7 +120,8 @@ $app->delete('/txn/:child/:parent/:id', 'deleteChildTable');
 
 $app->get('/fbid/:table/:field/:fieldid', 'findAllByFieldId');
 
-
+$app->get('/cv-sched', 'getCVSched');
+$app->get('/report/cv', 'getReportCV');
 
 
 
@@ -132,6 +133,160 @@ $app->get('/fbid/:table/:field/:fieldid', 'findAllByFieldId');
 $app->get('/r/apvdue', 'apvGetDue');
 
 $app->run();
+
+
+function getCVSched(){
+   
+    $app = \Slim\Slim::getInstance();
+    $r = $app->request();
+
+
+    $fr = $r->get('fr');
+    $to = $r->get('to');
+
+
+    if(!empty($to) && !empty($fr)){
+        
+        if(strtotime($to) >= strtotime($fr)){
+            //return 'correct range';
+        } else {
+            return 'invalid range';
+        }   
+    } else {
+        $query_date = 'now';
+        // First day of the month.
+        $fr = date('Y-m-01', strtotime($query_date));
+        // Last day of the month.
+        $to = date('Y-m-t', strtotime('now'));
+        
+        // Minus 15 days from now
+        //$fr = date('Y-m-d', strtotime('-14 day'));
+        //$to = date('Y-m-d', strtotime('now'));
+    }
+
+
+    $banks = Bank::find_all();
+
+    //$d = array('EWB', 'BPI');
+    $d = array();
+    echo 'Days,';
+    foreach ($banks as $bank) {
+       array_push($d, $bank->code);   
+    }
+    //print_r($d);
+    echo join(',', $d);
+    echo PHP_EOL;
+
+   
+
+    $begin = new DateTime($fr);
+    $end = new DateTime($to);
+    $end = $end->modify('+1 day'); 
+    
+    $interval = new DateInterval('P1D');
+    $daterange = new DatePeriod($begin, $interval ,$end);
+    
+    $tot = 0;
+    foreach($daterange as $date){
+        $currdate = $date->format("Y-m-d");
+
+        echo $currdate.',';
+        foreach ($banks as $bank) {
+            $sql = "SELECT SUM(amount) as amount FROM cvchkdtl ";
+            $sql .= "WHERE bankacctid = '".$bank->id."' ";
+            $sql .= "AND checkdate = '".$currdate."' ";
+            //echo $sql. PHP_EOL;
+            $cvchkdtl = Cvchkdtl::find_by_sql($sql); 
+            $cvchkdtl = array_shift($cvchkdtl);
+            echo empty($cvchkdtl->amount) ? '0.00': $cvchkdtl->amount;
+            echo end($banks)==$bank ? '':',';
+        }
+
+        echo PHP_EOL;
+
+    };
+
+    //echo 'jeff '. PHP_EOL . 'salunga';
+
+    //echo json_encode($bank);
+
+}
+
+
+
+function getReportCV(){
+   
+    $app = \Slim\Slim::getInstance();
+    $r = $app->request();
+
+
+    $fr = $r->get('fr');
+    $to = $r->get('to');
+
+
+    if(!empty($to) && !empty($fr)){
+        
+        if(strtotime($to) >= strtotime($fr)){
+            //return 'correct range';
+        } else {
+            return 'invalid range';
+        }   
+    } else {
+        $query_date = 'now';
+        // First day of the month.
+        $fr = date('Y-m-01', strtotime($query_date));
+        // Last day of the month.
+        $to = date('Y-m-t', strtotime('now'));
+        
+        // Minus 15 days from now
+        //$fr = date('Y-m-d', strtotime('-14 day'));
+        //$to = date('Y-m-d', strtotime('now'));
+    }
+
+
+   
+    echo 'Days,Unposted,Posted,Total';
+    echo PHP_EOL;
+
+   
+
+    $begin = new DateTime($fr);
+    $end = new DateTime($to);
+    $end = $end->modify('+1 day'); 
+    
+    $interval = new DateInterval('P1D');
+    $daterange = new DatePeriod($begin, $interval ,$end);
+    
+    
+    foreach($daterange as $date){
+        $currdate = $date->format("Y-m-d");
+
+        $tot = 0;
+        echo $currdate.',';
+        for($ctr=0; $ctr <= 1; $ctr++) {
+            //echo $ctr.',';
+
+            $sql = "SELECT SUM(b.amount) AS amount FROM cvhdr a, cvchkdtl b ";
+            $sql .= "WHERE a.id = b.cvhdrid  AND checkdate = '".$currdate."' AND a.posted = ". $ctr;
+            $cvchkdtl = Cvchkdtl::find_by_sql($sql); 
+            $cvchkdtl = array_shift($cvchkdtl);
+            echo empty($cvchkdtl->amount) ? '0.00': $cvchkdtl->amount;
+            //echo $ctr==1 ? '':',';
+            $tot = $tot + $cvchkdtl->amount;
+            echo $ctr==1 ? ','.$tot : ',';
+            //echo ',';
+        }
+        //echo '0.00';
+
+        echo PHP_EOL;
+
+    };
+
+    //echo 'jeff '. PHP_EOL . 'salunga';
+
+    //echo json_encode($bank);
+
+}
 
 function getChildTable($child, $parent, $id){
 

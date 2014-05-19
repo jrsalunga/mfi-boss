@@ -36,11 +36,20 @@ require_once('../../lib/initialize.php');
 <script src="../js/vendors/accounting.js"></script>
 <script src="../js/vendors/jquery.filedrop.js"></script>
 
+
+
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/data.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
+<!-- Additional files for the Highslide popup effect -->
+<!--
+<script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide-full.min.js"></script>
+<script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide.config.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="http://www.highcharts.com/media/com_demo/highslide.css" />
+-->
 <script src="../js/common.js"></script>
+<script src="../js/highcharts.js"></script>
 
 <script src="../js/app.js"></script>
 
@@ -52,20 +61,29 @@ require_once('../../lib/initialize.php');
 
 $(document).ready(function(e) {
 	
+
 	
-	$.get('../api/report/cv?fr=<?=$_GET['fr']?>&to=<?=$_GET['to']?>', function (csv) {
-		//console.log(csv);
-		$('#graph').highcharts({
+	//$.getJSON('../api/cv-sched?fr=<?=$_GET['fr']?>&to=<?=$_GET['to']?>', function (csv) {
+		
+		
+		
+    //});
+	
+	
+	
+	//$.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=analytics.csv&callback=?', function (csv) {
+	$.get('../api/cv-sched?fr=<?=$_GET['fr']?>&to=<?=$_GET['to']?>', function (csv) {
+        //console.log(csv);
+        $('#graph').highcharts({
             data: {
                 csv: csv,
                 // Parse the American date format used by Google
-                parseDate: function (s) {  
-					//console.log(s)   
-					//var match = false;
+                parseDate: function (s) { 
+					//console.log(s);    
                     //var match = s.match(/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2})$/);
 					var match = s.match(/^([0-9]{1,4})\-([0-9]{1,2})\-([0-9]{1,2})$/);
                     if (match) {
-                        console.log(Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]));
+                        //console.log(Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]));
                         return Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]);
                     } else {
 						//console.log(s);
@@ -134,15 +152,12 @@ $(document).ready(function(e) {
                 shared: true,
                 crosshairs: true
             },
-			tmp: 0,
             plotOptions: {
                 series: {
                     cursor: 'pointer',
                     point: {
                         events: {
                             click: function (e) {
-								console.log(this.series);
-								
 								console.log(Highcharts.dateFormat('%Y-%m-%d', this.x));
 								/*
                                 hs.htmlExpand(null, {
@@ -166,33 +181,18 @@ $(document).ready(function(e) {
             },
             series: [
 				{
-					name: 'Unposted',
+					name: 'BDO-QP2',
 					lineWidth: 3,
 					marker: {
 						radius: 4
 					}
-				},
-				{
-					name: 'Posted',
-					lineWidth: 3,
-					marker: {
-						radius: 4
-					}
-				},
-				{
-					type: 'area',
-					name: 'Total',
-					lineWidth: 0,
-					marker: {
-						radius: 0
-					},
-					index: -1,
-					fillOpacity: 0.4
 				}
 			]
         });
-		
-	});
+    });
+
+	
+	
 
 	
 });
@@ -253,10 +253,10 @@ $(document).ready(function(e) {
             <li>
 				<a href="ap-project">Accounts Payable (Project)</a>
 			</li>
-            <li class="active">
+            <li>
             	<a href="cvhdr">Check</a>
             <li>
-            <li>
+            <li class="active">
             	<a href="cv-sched">CV Schedule</a>
             <li>
 		</ul>
@@ -265,7 +265,7 @@ $(document).ready(function(e) {
         	<section>
             	<div class="row">
                 	<div class="col-md-12 title">
-                		<h1>Check Voucher Schedules</h1>
+                		<h1>Check Voucher Schedules by Bank</h1>
                 	</div>
                 </div>
                 <div class="row">
