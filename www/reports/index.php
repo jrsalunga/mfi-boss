@@ -74,10 +74,10 @@ require_once('../../lib/initialize.php');
 				<a href="apvhdr-age">Accounts Payable (Aged)</a>
 			</li>
             <li>
-				<a href="ap-project">Accounts Payable (Project)</a>
+				<a href="ap-project">AP (Project)</a>
 			</li>
 			<li>
-				<a href="cvhdr">Check</a>
+				<a href="cv-sched">Check Schedule (Bank)</a>
 			<li>
 		</ul>
     	</div>

@@ -569,9 +569,6 @@ $(document).ready(function(e) {
             <li>
 				<a href="ap-project">AP (Project)</a>
 			</li>
-            <li>
-            	<a href="cvhdr">CV Schedule </a>
-            <li>
             <li class="active">
             	<a href="cv-sched">CV Schedule (Bank)</a>
             <li>
