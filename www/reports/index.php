@@ -9,7 +9,7 @@ require_once('../../lib/initialize.php');
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Project Activity Management</title>
+<title>MFI - Report</title>
 
 
 <link rel="stylesheet" href="../css/bootstrap.css">
@@ -77,7 +77,7 @@ require_once('../../lib/initialize.php');
 				<a href="ap-project">AP (Project)</a>
 			</li>
 			<li>
-				<a href="cv-sched">Check Schedule (Bank)</a>
+				<a href="cv-sched">CV Schedule (Bank)</a>
 			<li>
 		</ul>
     	</div>

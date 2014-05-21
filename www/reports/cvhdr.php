@@ -10,7 +10,7 @@ $dr = new DateRange($_GET['fr'],$_GET['to']);
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MFI - Check Voucher Scheduling</title>
+<title>MFI - Check Voucher Schedule - Status</title>
 
 
 <link rel="stylesheet" href="../css/bootstrap.css">
@@ -263,7 +263,7 @@ $(document).ready(function(e) {
         	<section>
             	<div class="row">
                 	<div class="col-md-12 title">
-                		<h1>Check Voucher Schedules - Status</h1>
+                		<h1>Check Voucher Schedule - Status</h1>
                 	</div>
                 </div>
                 <div class="row">
@@ -292,6 +292,54 @@ $(document).ready(function(e) {
                             </div>
                         </div>
                 	</div>
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                    	<a class="btn btn-primary pull-right" href="cv-sched">
+                        <span class="glyphicon glyphicon-list-alt" style="color: #fff;"></span>
+                        Back to Summary
+                        </a>
+                        <br>
+                        <br>
+                        <br>
+                    </div>
+                    <div class="col-md-12">
+                    	<table class="table table-bordered">
+                        	<thead>
+                            	<tr>
+                            	<?php
+    								echo '<th>Days</th><th>Unposted</th><th>Posted</th><th>Total</th>';
+    							?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	<?php
+    								foreach($dr->getDaysInterval() as $date){
+    									$currdate = $date->format("Y-m-d");
+    									echo '<tr>';
+    									echo '<td>'.$date->format("M d").'</td>';
+    									$tot = 0;
+    									for($x = 0; $x <= 1; $x++){
+    										$sql = "SELECT SUM(b.amount) as amount FROM cvhdr a, cvchkdtl b ";
+    										$sql .= "WHERE a.id = b.cvhdrid AND b.checkdate = '".$currdate."' ";
+    										$sql .= "AND a.posted = '".$x."'";
+    										$cvchkdtl = Cvchkdtl::find_by_sql($sql); 
+    										$cvchkdtl = array_shift($cvchkdtl);
+    										$amt = empty($cvchkdtl->amount) ? '-': number_format($cvchkdtl->amount, 2);
+											$tot = $tot + $cvchkdtl->amount;
+    										echo '<td style="text-align: right;">'.$amt.'</td>';
+											$tot = ($tot == 0) ? '-':$tot;
+											echo $x==1 ?  '<td style="text-align: right;">'.number_format($tot,2).'</td>':'';
+    										
+    									}	
+    									
+    									echo '</tr>';
+    								}
+    							?>
+                            </tbody>
+                        </table>
+                    </div>
+                    
                 </div>
                             
             </section>

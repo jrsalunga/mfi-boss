@@ -62,7 +62,7 @@ $tot_hirise = array_shift($tot_hirise);
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Project Activity Management</title>
+<title>MFI - Account Payables - Project</title>
 
 
 

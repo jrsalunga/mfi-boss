@@ -9,7 +9,7 @@ require_once('../../lib/initialize.php');
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Project Activity Management</title>
+<title>MFI - Account Payables - Aged</title>
 
 
 <link rel="stylesheet" href="../css/bootstrap.css">
