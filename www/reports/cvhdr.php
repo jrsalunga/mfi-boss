@@ -1,6 +1,7 @@
 <?php
 require_once('../../lib/initialize.php');
 !$session->is_logged_in() ? redirect_to("../login"): "";
+$dr = new DateRange($_GET['fr'],$_GET['to']);
 ?>
 <!DOCTYPE HTML>
 <html lang="en-ph">
@@ -53,7 +54,7 @@ require_once('../../lib/initialize.php');
 $(document).ready(function(e) {
 	
 	
-	$.get('../api/report/cv?fr=<?=$_GET['fr']?>&to=<?=$_GET['to']?>', function (csv) {
+	$.get('../api/report/cv?fr=<?=$dr->fr?>&to=<?=$dr->to?>', function (csv) {
 		//console.log(csv);
 		$('#graph').highcharts({
             data: {
@@ -251,13 +252,13 @@ $(document).ready(function(e) {
 				<a href="apvhdr-age">Accounts Payable (Aged)</a>
 			</li>
             <li>
-				<a href="ap-project">Accounts Payable (Project)</a>
+				<a href="ap-project">AP (Project)</a>
 			</li>
             <li class="active">
-            	<a href="cvhdr">Check</a>
+            	<a href="cvhdr">CV Schedule</a>
             <li>
             <li>
-            	<a href="cv-sched">CV Schedule</a>
+            	<a href="cv-sched">CV Schedule (Bank)</a>
             <li>
 		</ul>
     	</div>
@@ -265,7 +266,26 @@ $(document).ready(function(e) {
         	<section>
             	<div class="row">
                 	<div class="col-md-12 title">
-                		<h1>Check Voucher Schedules</h1>
+                		<h1>Check Voucher Schedules - Status</h1>
+                	</div>
+                </div>
+                <div class="row">
+                	<div class="col-md-12 datepick pull-right">
+                		<div>
+                        
+                        	<form role="form" class="form-inline pull-right">
+                           		<div class="form-group">
+                                	<label class="sr-only" for="exampleInputEmail2">Email address</label>
+                                    <input type="text" class="form-control" id="fr" name="fr" placeholder="YYYY-MM-DD" value="<?=$dr->fr?>">
+                                </div>	
+                               	<div class="form-group">
+                                    <label class="sr-only" for="exampleInputPassword2">Password</label>
+                                    <input type="text" class="form-control" id="to" name="to" placeholder="YYYY-MM-DD"  value="<?=$dr->to?>">
+                              	</div>
+              
+  								<button type="submit" class="btn btn-success">Go</button>
+                            </form>
+                        </div>
                 	</div>
                 </div>
                 <div class="row">

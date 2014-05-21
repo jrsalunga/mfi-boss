@@ -202,9 +202,12 @@ $(document).ready(function(e) {
             <li class="active">
 				<a href="<?=$relativeslash?>ap-project">AP (Project)</a>
 			</li>
-			<li>
-				<a href="<?=$relativeslash?>cvhdr">Check</a>
-			<li>
+			 <li>
+            	<a href="<?=$relativeslash?>cvhdr">CV Schedule</a>
+            <li>
+            <li>
+            	<a href="<?=$relativeslash?>cv-sched">CV Schedule (Bank)</a>
+            <li>
             
 		</ul>
     	</div>

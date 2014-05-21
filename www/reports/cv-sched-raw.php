@@ -80,35 +80,45 @@ function daterange(){
 }
 
 
+
+
+
 $(document).ready(function(e) {
 	
-    daterange();
+	daterange();
+	
+	//$.getJSON('../api/cv-sched?fr=<?=$dr->fr?>&to=<?=$_GET['to']?>', function (csv) {
+		
+		
+		
+    //});
+	
 	
 	$.get('../api/report/bank/total?fr=<?=$dr->fr?>&to=<?=$dr->to?>', function (csv) {
-        //console.log(csv);
-        //var totalOption = {
-        $('#sg-total').highcharts({
-            data: {
-                csv: csv,
-                parseDate: function (s) {       
-                    var match = s.match(/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2})$/);
-                    if (match) {
-                        return Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]);
-                    }
-                }
-            },
-            chart: {
-                height: 50,
-                type: 'area',
+		//console.log(csv);
+		//var totalOption = {
+		$('#sg-total').highcharts({
+			data: {
+				csv: csv,
+				parseDate: function (s) {		
+					var match = s.match(/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2})$/);
+					if (match) {
+						return Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]);
+					}
+				}
+			},
+			chart: {
+				height: 50,
+				type: 'area',
 
-            },
+			},
             title: {
                 text: null
             },
             tooltip: {
                 enabled: false,
             },
-            xAxis: {
+			xAxis: {
                 type: 'datetime',
                 tickInterval: 7 * 24 * 3600 * 1000, // one week
                 tickWidth: 0,
@@ -118,8 +128,8 @@ $(document).ready(function(e) {
                     
                 }
             },
-             yAxis: { // left y axis
-                min: 0,
+			 yAxis: { // left y axis
+				min: 0,
                 gridLineWidth: 0,
                 labels: {
                     enabled: false
@@ -141,7 +151,7 @@ $(document).ready(function(e) {
                     }
                 }
             },
-            series: [{
+			series: [{
                 name: null,
                 lineWidth: 2,
                 marker: {
@@ -149,39 +159,39 @@ $(document).ready(function(e) {
                 },
                 showInLegend: false,
                 fillOpacity: 0.3   
-            }],
+			}],
             exporting: { enabled: false }
-        
-       });
-    });
-    
-    
-    
-    $.get('../api/report/bank/status/posted?fr=<?=$dr->fr?>&to=<?=$dr->to?>', function (csv) {
-        console.log(csv);
-        //var totalOption = {
-        $('#sg-posted').highcharts({
-            data: {
-                csv: csv,
-                parseDate: function (s) {       
-                    var match = s.match(/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2})$/);
-                    if (match) {
-                        return Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]);
-                    }
-                }
-            },
-            chart: {
-                height: 50,
-                type: 'area',
+		
+	   });
+	});
+	
+	
+	
+	$.get('../api/report/bank/status/posted?fr=<?=$dr->fr?>&to=<?=$dr->to?>', function (csv) {
+		console.log(csv);
+		//var totalOption = {
+		$('#sg-posted').highcharts({
+			data: {
+				csv: csv,
+				parseDate: function (s) {		
+					var match = s.match(/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2})$/);
+					if (match) {
+						return Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]);
+					}
+				}
+			},
+			chart: {
+				height: 50,
+				type: 'area',
 
-            },
+			},
             title: {
                 text: null
             },
             tooltip: {
                 enabled: false,
             },
-            xAxis: {
+			xAxis: {
                 type: 'datetime',
                 tickInterval: 7 * 24 * 3600 * 1000, // one week
                 tickWidth: 0,
@@ -191,8 +201,8 @@ $(document).ready(function(e) {
                     
                 }
             },
-             yAxis: { // left y axis
-                min: 0,
+			 yAxis: { // left y axis
+				min: 0,
                 gridLineWidth: 0,
                 labels: {
                     enabled: false
@@ -214,7 +224,7 @@ $(document).ready(function(e) {
                     }
                 }
             },
-            series: [{
+			series: [{
                 name: null,
                 lineWidth: 2,
                 marker: {
@@ -222,39 +232,39 @@ $(document).ready(function(e) {
                 },
                 showInLegend: false,
                 fillOpacity: 0.3   
-            }],
+			}],
             exporting: { enabled: false }
-        
-       });
-    });
-    
-    
-    
-    $.get('../api/report/bank/status/unposted?fr=<?=$dr->fr?>&to=<?=$dr->to?>', function (csv) {
-        console.log(csv);
-        //var totalOption = {
-        $('#sg-unposted').highcharts({
-            data: {
-                csv: csv,
-                parseDate: function (s) {       
-                    var match = s.match(/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2})$/);
-                    if (match) {
-                        return Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]);
-                    }
-                }
-            },
-            chart: {
-                height: 50,
-                type: 'area',
+		
+	   });
+	});
+	
+	
+	
+	$.get('../api/report/bank/status/unposted?fr=<?=$dr->fr?>&to=<?=$dr->to?>', function (csv) {
+		console.log(csv);
+		//var totalOption = {
+		$('#sg-unposted').highcharts({
+			data: {
+				csv: csv,
+				parseDate: function (s) {		
+					var match = s.match(/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2})$/);
+					if (match) {
+						return Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]);
+					}
+				}
+			},
+			chart: {
+				height: 50,
+				type: 'area',
 
-            },
+			},
             title: {
                 text: null
             },
             tooltip: {
                 enabled: false,
             },
-            xAxis: {
+			xAxis: {
                 type: 'datetime',
                 tickInterval: 7 * 24 * 3600 * 1000, // one week
                 tickWidth: 0,
@@ -264,8 +274,8 @@ $(document).ready(function(e) {
                     
                 }
             },
-             yAxis: { // left y axis
-                min: 0,
+			 yAxis: { // left y axis
+				min: 0,
                 gridLineWidth: 0,
                 labels: {
                     enabled: false
@@ -287,7 +297,7 @@ $(document).ready(function(e) {
                     }
                 }
             },
-            series: [{
+			series: [{
                 name: null,
                 lineWidth: 2,
                 marker: {
@@ -295,11 +305,12 @@ $(document).ready(function(e) {
                 },
                 showInLegend: false,
                 fillOpacity: 0.3   
-            }],
+			}],
             exporting: { enabled: false }
-        
-       });
-    });
+		
+	   });
+	});
+	
 	
 	
 	
@@ -307,19 +318,17 @@ $(document).ready(function(e) {
 	$.get('../api/cv-sched?fr=<?=$dr->fr?>&to=<?=$dr->to?>', function (csv) {
         //console.log(csv);
         $('#graph').highcharts({
+
             data: {
                 csv: csv,
                 // Parse the American date format used by Google
-                parseDate: function (s) { 
-					//console.log(s);    
-                    //var match = s.match(/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2})$/);
-					var match = s.match(/^([0-9]{1,4})\-([0-9]{1,2})\-([0-9]{1,2})$/);
+                parseDate: function (s) {
+                    
+                    var match = s.match(/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2})$/);
                     if (match) {
-                        //console.log(Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]));
+                        console.log(Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]))
                         return Date.UTC(+('20' + match[3]), match[1] - 1, +match[2]);
-                    } else {
-						//console.log(s);
-					}
+                    }
                 }
             },
 			chart: {
@@ -341,11 +350,12 @@ $(document).ready(function(e) {
                 tickWidth: 0,
                 gridLineWidth: 1,
                 labels: {
-                    align: 'left',
+                    align: 'center',
                     x: 3,
                     y: 15
                 }
             },
+
             yAxis: [{ // left y axis
 				min: 0,
                 title: {
@@ -358,9 +368,7 @@ $(document).ready(function(e) {
                     format: '{value:.,0f}'
                 },
                 showFirstLabel: false
-            }, 
-            /*
-            { // right y axis
+            }, { // right y axis
                 linkedTo: 0,
                 gridLineWidth: 0,
                 opposite: true,
@@ -374,9 +382,8 @@ $(document).ready(function(e) {
                     format: '{value:.,0f}'
                 },
                 showFirstLabel: false
-            }
-            */
-            ],
+            }],
+
             legend: {
                 align: 'left',
                 verticalAlign: 'top',
@@ -384,10 +391,12 @@ $(document).ready(function(e) {
                 floating: true,
                 borderWidth: 0
             },
+
             tooltip: {
                 shared: true,
                 crosshairs: true
             },
+
             plotOptions: {
                 series: {
                     cursor: 'pointer',
@@ -415,12 +424,83 @@ $(document).ready(function(e) {
                     }
                 }
             },
+
             series: [
 				{
 					name: 'BDO-QP2',
-					lineWidth: 3,
+					lineWidth: 2,
 					marker: {
-						radius: 4
+						radius: 2
+					}
+				},
+				{
+					name: 'BPI-MTI',
+					lineWidth: 2,
+					marker: {
+						radius: 2
+					}
+				},
+				{
+					name: 'BDO-QP2',
+					lineWidth: 2,
+					marker: {
+						radius: 2
+					}
+				},
+				{
+					name: 'BDO-QP2',
+					lineWidth: 2,
+					marker: {
+						radius: 2
+					}
+				},
+				{
+					name: 'BDO-QP2',
+					lineWidth: 2,
+					marker: {
+						radius: 2
+					}
+				},
+				{
+					name: 'BDO-QP2',
+					lineWidth: 2,
+					marker: {
+						radius: 2
+					}
+				},
+				{
+					name: 'BDO-QP2',
+					lineWidth: 2,
+					marker: {
+						radius: 2
+					}
+				},
+				{
+					name: 'BDO-QP2',
+					lineWidth: 2,
+					marker: {
+						radius: 2
+					}
+				},
+				{
+					name: 'BDO-QP2',
+					lineWidth: 2,
+					marker: {
+						radius: 2
+					}
+				},
+				{
+					name: 'BDO-QP2',
+					lineWidth: 2,
+					marker: {
+						radius: 2
+					}
+				},
+				{
+					name: 'BDO-QP2',
+					lineWidth: 2,
+					marker: {
+						radius: 2
 					}
 				}
 			]
@@ -490,7 +570,7 @@ $(document).ready(function(e) {
 				<a href="ap-project">AP (Project)</a>
 			</li>
             <li>
-            	<a href="cvhdr">CV Schedule</a>
+            	<a href="cvhdr">CV Schedule </a>
             <li>
             <li class="active">
             	<a href="cv-sched">CV Schedule (Bank)</a>
@@ -501,144 +581,134 @@ $(document).ready(function(e) {
         	<section>
             	<div class="row">
                 	<div class="col-md-12 title">
-                		<h1>Check Voucher Schedule - Bank</h1>
+                		<h1>Check Voucher Schedule - Bank Details</h1>
                 	</div>
                 </div>
                 <div class="row">
-                	<div class="col-md-6">
-                    	<!--
-                        <a class="btn btn-primary" href="cv-sched-raw">
-                            <span style="color: #fff;" class="glyphicon glyphicon-th-list"></span>
+                    <div class="col-md-6">
+                        <a class="btn btn-primary" href="cv-sched">
+                        <span style="color: #fff;" class="glyphicon glyphicon-list-alt"></span>
+                        Back to Summary
                         </a>
-                        -->
                     </div>
                 	<div class="col-md-6 datepick">
-                        <form role="form" class="form-inline pull-right">
-                            <div class="form-group">
-                                <label class="sr-only" for="fr">From:</label>
+                    	<form role="form" class="form-inline pull-right">
+                       		<div class="form-group">
+                            	<label class="sr-only" for="fr">From:</label>
                                 <input type="text" class="form-control" id="fr" name="fr" placeholder="YYYY-MM-DD" value="<?=$dr->fr?>">
                             </div>	
-                            <div class="form-group">
+                           	<div class="form-group">
                                 <label class="sr-only" for="to">To:</label>
                                 <input type="text" class="form-control" id="to" name="to" placeholder="YYYY-MM-DD"  value="<?=$dr->to?>">
-                            </div>
-                            <button type="submit" class="btn btn-success">Go</button>
+                          	</div>
+    						<button type="submit" class="btn btn-success">Go</button>
                         </form>
+                        
                 	</div>
                 </div>
-                <div class="row">
-                	<div class="col-md-12 title">
-                		<div class="col-md-12">
-                        	<div id="graph">
-                            </div>
-                        </div>
-                	</div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 lb">
-                        <div class="row">
-                            <div class="col-md-6 GAcf">
-                                <div>
-                                    <p>Total</p>
-                                    <div class="GAJv">
-                                        <?php
-                                            $drtot = Cvchkdtl::total_by_date_range($dr->fr, $dr->to);                                   
-                                        ?>
-                                        <h4><?=number_format($drtot->amount,2)?></h4>
-                                        <div id="sg-total" class="thumb-graph">
-                                            
-                                        </div>
-                                    </div>
+                
+              	<div class="row">
+                	<div class="col-md-3 GAcf">
+                    	<div>
+                            <p>Total</p>
+                            <div class="GAJv">
+                            	<?php
+									$drtot = Cvchkdtl::total_by_date_range($dr->fr, $dr->to); 									
+								?>
+                                <h4><?=number_format($drtot->amount,2)?></h4>
+                                <div id="sg-total" class="thumb-graph">
+                                	
                                 </div>
                             </div>
-                            <div class="col-md-6 GAcf">
-                                <div>
-                                    <p></p>
-                                    <div class="GAJv">
-                                        
-                                        <h4></h4>
-                                        <div id="sg-total" class="thumb-graph">
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 GAcf">
-                                <div>
-                                    <p>Posted</p>
-                                    <div class="GAJv">
-                                        <?php
-                                            $drtotp = Cvchkdtl::total_status_by_date_range($dr->fr, $dr->to, 1);                                    
-                                        ?>
-                                        <h4><?=number_format($drtotp->amount,2)?></h4>
-                                        <div id="sg-posted" class="thumb-graph">
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 GAcf">
-                                <div>
-                                    <p>Unposted</p>
-                                    <div class="GAJv">
-                                        <?php
-                                            $drtotu = Cvchkdtl::total_status_by_date_range($dr->fr, $dr->to, 0);                                    
-                                        ?>
-                                        <h4><?=number_format($drtotu->amount,2)?></h4>
-                                        <div id="sg-unposted" class="thumb-graph">
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
                         </div>
                     </div>
-                    <div class="col-md-6 rb">
-                        <a class="btn btn-primary" href="cv-sched-raw">
-                            <span style="color: #fff;" class="glyphicon glyphicon-th-list"></span> 
-                            View Bank Details
-                        </a>
-                        <a class="btn btn-primary" href="cvhdr">
-                            <span style="color: #fff;" class="glyphicon glyphicon-warning-sign"></span> 
-                            View by Status
-                        </a>
-                        </br>
-                        </br>
-                        <?php
-                        $banks = Bank::find_all();
-                        ?>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Days</th><th>Total</th>
+                    <!--
+                	<div class="col-md-3 GAcf">
+                    	<div>
+                            <p></p>
+                            <div class="GAJv">
+                            	
+                                <h4></h4>
+                                <div id="sg-total" class="thumb-graph">
+                                	
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 GAcf">
+                    	<div>
+                            <p>Posted</p>
+                            <div class="GAJv">
+                            	<?php
+									$drtotp = Cvchkdtl::total_status_by_date_range($dr->fr, $dr->to, 1); 									
+								?>
+                                <h4><?=number_format($drtotp->amount,2)?></h4>
+                                <div id="sg-posted" class="thumb-graph">
+                                	
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 GAcf">
+                    	<div>
+                            <p>Unposted</p>
+                            <div class="GAJv">
+                            	<?php
+									$drtotu = Cvchkdtl::total_status_by_date_range($dr->fr, $dr->to, 0); 									
+								?>
+                                <h4><?=number_format($drtotu->amount,2)?></h4>
+                                <div id="sg-unposted" class="thumb-graph">
+                                	
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    -->    
+                		
+               
+             		<div class="col-md-12">
+                    	<?php
+    						$banks = Bank::find_all();
+    					?>
+                    	<table class="table table-bordered">
+                        	<thead>
+                            	<tr>
+                            	<?php
+    								echo '<th>Days</th>';
+    								foreach($banks as $bank){
+    									echo '<th>'. $bank->code .'</th>';	
+    								}
+									echo '<th>Total</th>';
+    							?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-                                    foreach($dr->getDaysInterval() as $date){
-                                        $currdate = $date->format("Y-m-d");
-                                        echo '<tr>';
-                                        echo '<td>'.$date->format("M d").'</td>';
-                                        
-                                        //foreach($banks as $bank){
-                                            $sql = "SELECT SUM(amount) as amount FROM cvchkdtl ";
-                                            $sql .= "WHERE checkdate = '".$currdate."' ";
-                                            //$sql .= "AND bankacctid = '".$bank->id."'";
-                                            $cvchkdtl = Cvchkdtl::find_by_sql($sql); 
-                                            $cvchkdtl = array_shift($cvchkdtl);
-                                            $amt = empty($cvchkdtl->amount) ? '-': number_format($cvchkdtl->amount, 2);
-                                            echo '<td style="text-align: right;">'.$amt.'</td>';
-                                            
-                                        //}   
-                                        
-                                        echo '</tr>';
-                                    }
-                                ?>
+                            	<?php
+    								foreach($dr->getDaysInterval() as $date){
+    									$currdate = $date->format("Y-m-d");
+    									echo '<tr>';
+    									echo '<td>'.$date->format("M d").'</td>';
+    									$tot = 0;
+    									foreach($banks as $bank){
+    										$sql = "SELECT SUM(amount) as amount FROM cvchkdtl ";
+    										$sql .= "WHERE checkdate = '".$currdate."' ";
+    										$sql .= "AND bankacctid = '".$bank->id."'";
+    										$cvchkdtl = Cvchkdtl::find_by_sql($sql); 
+    										$cvchkdtl = array_shift($cvchkdtl);
+    										$amt = empty($cvchkdtl->amount) ? '-': number_format($cvchkdtl->amount, 2);
+											$tot = $tot + $cvchkdtl->amount;
+    										echo '<td style="text-align: right;">'.$amt.'</td>';
+											$tot = ($tot == 0) ? '-':$tot;
+											echo end($banks)==$bank ?  '<td style="text-align: right;">'.number_format($tot,2).'</td>':'';
+    										
+    									}	
+    									
+    									echo '</tr>';
+    								}
+    							?>
                             </tbody>
                         </table>
                     </div>
-                    
                 </div>      
             </section>
         </div>
