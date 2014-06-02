@@ -398,8 +398,8 @@ function getChkDay(){
         
         $sql = "SELECT bankcode, SUM(amount) as amount ";
         $sql .= "FROM vcvchkdtl WHERE checkdate = '". $currdate."' ";
-        if(in_array($r->get('posted'), array(0,1))){
-            //$sql .= "AND posted = '". $r->get('posted')."' ";
+        if($r->get('posted')==1 || $r->get('posted')==0){
+            $sql .= "AND posted = '". $r->get('posted')."' ";
         }
         $sql .= "GROUP BY bankid ORDER BY bankcode";
         $cvchkdtls = vCvchkdtl::find_by_sql($sql); 
