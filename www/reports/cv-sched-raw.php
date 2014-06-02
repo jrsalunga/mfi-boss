@@ -687,14 +687,18 @@ $(document).ready(function(e) {
     									echo '<td><a href="chk-day?fr='.$currdate.'&to='.$currdate.'">'.$date->format("M j, Y").'</a></td>';
     									$tot = 0;
     									foreach($banks as $bank){
-    										$sql = "SELECT SUM(amount) as amount FROM cvchkdtl ";
+    										$sql = "SELECT SUM(amount) as amount, COUNT(amount) as checkno FROM cvchkdtl ";
     										$sql .= "WHERE checkdate = '".$currdate."' ";
     										$sql .= "AND bankacctid = '".$bank->id."'";
     										$cvchkdtl = Cvchkdtl::find_by_sql($sql); 
     										$cvchkdtl = array_shift($cvchkdtl);
     										$amt = empty($cvchkdtl->amount) ? '-': number_format($cvchkdtl->amount, 2);
 											$tot = $tot + $cvchkdtl->amount;
-    										echo '<td style="text-align: right;">'.$amt.'</td>';
+    										echo '<td style="text-align: right;">';
+											if($cvchkdtl->checkno > 0){
+												echo '<span class="pull-left"><a href="chk-day?fr='.$currdate.'&to='.$currdate.'">'.$cvchkdtl->checkno.'</a></span>';	
+											}
+											echo $amt.'</td>';
 											$tot = ($tot == 0) ? '-':$tot;
 											echo end($banks)==$bank &&  $tot!= 0 ?  '<td style="text-align: right;">'.number_format($tot,2).'</td>':'<td style="text-align: right;">-</td>';
     										

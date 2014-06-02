@@ -86,27 +86,27 @@ class DateRange {
 
 
 	public function fr_prev_day(){
-		//$fr = new DateTime($this->fr);
-		//return $fr->modify('-1 day'); 
-		return $this->fr;
+		$fr = new DateTime($this->fr);
+		$fr->modify('-1 day'); 
+		return $fr->format("Y-m-d");
 	}
 
 	public function fr_next_day(){
-		//$fr = new DateTime($this->fr);
-		//return $fr->modify('+1 day'); 
-		return $this->fr;
+		$fr = new DateTime($this->fr);
+		$fr->modify('+1 day'); 
+		return $fr->format("Y-m-d");
 	}
 
 	public function to_prev_day(){
-		//$to = new DateTime($this->to);
-		//return $to->modify('-1 day'); 
-		return $this->to;
+		$to = new DateTime($this->to);
+		$to->modify('-1 day'); 
+		return $to->format("Y-m-d");
 	}
 
 	public function to_next_day(){
-		//$to = new DateTime($this->to);
-		//return $to->modify('+1 day'); 
-		return $this->to;
+		$to = new DateTime($this->to);
+		$to->modify('+1 day'); 
+		return $to->format("Y-m-d");
 	}
 								
 	

@@ -78,13 +78,15 @@ $(document).ready(function(e) {
 .prn-header {
 	margin: 0 20px;
 }
-
+.prn-header h1 {
+	font-size:20px;
+}
 table.floatThead-table {
     background-color: #FFF;
 }
 
 .table td {
-	white-space:nowrap;
+	/*white-space:nowrap;*/
 }
 </style>
 <style media="screen">
