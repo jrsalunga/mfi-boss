@@ -316,7 +316,7 @@ $(document).ready(function(e) {
                         	<thead>
                             	<tr>
                             	<?php
-    								echo '<th>Day(s)</th><th>Bank</th><th>CV Ref No</th><th>Check No</th><th>Payee</th><th>Check Amount</th>';
+    								echo '<th>Day(s)</th><th>CV Ref No</th><th>Bank</th><th>Check No</th><th>Payee</th><th>Check Amount</th>';
     							?>
                                 </tr>
                             </thead>
@@ -339,10 +339,9 @@ $(document).ready(function(e) {
 											echo '<td rowspan="'.$len.'">';
 											echo $date->format("M j, Y").'</td>';
 											foreach($cvchkdtls as $cvchkdtl){
-												//$code = Bank::row($cvchkdtl->bankacctid,0);
-												echo '<td class="bnk-'.$cvchkdtl->bankcode.'" title="'.$cvchkdtl->bank.'">'.$cvchkdtl->bankcode.'</td>';
 												echo '<td class="bnk-'.$cvchkdtl->bankcode.'" title="'.$cvchkdtl->bank.'">';
 												echo '<a href="/reports/check-print/'.$cvchkdtl->cvhdrid.'" target="_blank">'.$cvchkdtl->refno.'</td>';
+												echo '<td class="bnk-'.$cvchkdtl->bankcode.'" title="'.$cvchkdtl->bank.'">'.$cvchkdtl->bankcode.'</td>';	
 												echo '<td class="bnk-'.$cvchkdtl->bankcode.'" >'.$cvchkdtl->checkno;
 												if($cvchkdtl->posted==1){
 													echo '<span class="glyphicon glyphicon-ok-circle pull-right" style="color:#5cb85c;" title="posted"></span>';
