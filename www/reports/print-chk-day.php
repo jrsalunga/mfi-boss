@@ -222,9 +222,9 @@ table {
                     
                     if($len > 0){
                         echo '<td rowspan="'.$len.'">';
-                        echo $date->format("M j, Y").'</td>';
+                        echo $date->format("M j, Y").'<div>'.$date->format("l").'<div></td>';
                         foreach($cvchkdtls as $cvchkdtl){
-							echo '<td class="bnk-'.$cvchkdtl->bankcode.'" title="'.$cvchkdtl->bank.'">'.$cvchkdtl->refno.'</td>';
+							echo '<td class="bnk-'.$cvchkdtl->bankcode.'">'.$cvchkdtl->refno.'</td>';
 							echo '<td class="bnk-'.$cvchkdtl->bankcode.'" title="'.$cvchkdtl->bank.'">'.$cvchkdtl->bankcode.'</td>';
                             echo '<td class="bnk-'.$cvchkdtl->bankcode.'" >'.$cvchkdtl->checkno;
 							if($cvchkdtl->posted==1){
@@ -237,7 +237,7 @@ table {
                             echo '<td class="bnk-'.$cvchkdtl->bankcode.'"  style="text-align:right;">'.number_format($cvchkdtl->amount,2).'</td></tr>';
                         }
                     } else {
-                        echo '<td>'.$date->format("M j, Y").'</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>';
+                        echo '<td>'.$date->format("M j, Y").'<div><em>'.$date->format("l").'</em></div></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>';
                     }
                     
                     

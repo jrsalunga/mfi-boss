@@ -4,7 +4,14 @@ require_once('../../lib/initialize.php');
 if(isset($_GET['ref'])){
 	setcookie("ref", $_SERVER['HTTP_REFERER'] , time() + (3600)); // 1hr
 }
-$dr = new DateRange($_GET['fr'],$_GET['to'], false);
+
+if(isset($_GET['fr']) && isset($_GET['to'])){
+	$dr = new DateRange($_GET['fr'],$_GET['to'], false);
+} else {
+	$dr = new DateRange(NULL,NULL,false);	
+}
+	
+
 $uri = explode('?',$_SERVER['REQUEST_URI']);
 $qs = !empty($uri[1]) ? '?'.$uri[1] : '?fr='.$dr->fr.'&to='.$dr->to;
 ?>
@@ -337,9 +344,9 @@ $(document).ready(function(e) {
 										
 										if($len > 0){
 											echo '<td rowspan="'.$len.'">';
-											echo $date->format("M j, Y").'</td>';
+											echo $date->format("M j, Y").'<div><em>'.$date->format("l").'</em></div></td>';
 											foreach($cvchkdtls as $cvchkdtl){
-												echo '<td class="bnk-'.$cvchkdtl->bankcode.'" title="'.$cvchkdtl->bank.'">';
+												echo '<td class="bnk-'.$cvchkdtl->bankcode.'">';
 												echo '<a href="/reports/check-print/'.$cvchkdtl->cvhdrid.'" target="_blank">'.$cvchkdtl->refno.'</td>';
 												echo '<td class="bnk-'.$cvchkdtl->bankcode.'" title="'.$cvchkdtl->bank.'">'.$cvchkdtl->bankcode.'</td>';	
 												echo '<td class="bnk-'.$cvchkdtl->bankcode.'" >'.$cvchkdtl->checkno;
@@ -353,7 +360,7 @@ $(document).ready(function(e) {
 												echo '<td class="bnk-'.$cvchkdtl->bankcode.'"  style="text-align:right;">'.number_format($cvchkdtl->amount,2).'</td></tr>';
 											}
 										} else {
-											echo '<td>'.$date->format("M j, Y").'</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>';
+											echo '<td>'.$date->format("M j, Y").'<div><em>'.$date->format("l").'</em></div></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>';
 										}
 										
 										
