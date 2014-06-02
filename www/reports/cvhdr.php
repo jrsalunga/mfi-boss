@@ -1,7 +1,11 @@
 <?php
 require_once('../../lib/initialize.php');
 !$session->is_logged_in() ? redirect_to("../login"): "";
-$dr = new DateRange($_GET['fr'],$_GET['to']);
+if(isset($_GET['fr']) && isset($_GET['to'])){
+	$dr = new DateRange($_GET['fr'],$_GET['to'], false);
+} else {
+	$dr = new DateRange(NULL,NULL,false);	
+}
 ?>
 <!DOCTYPE HTML>
 <html lang="en-ph">
@@ -331,7 +335,7 @@ $(document).ready(function(e) {
 											$tot = $tot + $cvchkdtl->amount;
     										echo '<td style="text-align: right;">'.$amt.'</td>';
 											$tot = ($tot == 0) ? '-':$tot;
-											echo $x==1 ?  '<td style="text-align: right;">'.number_format($tot,2).'</td>':'';
+											echo ($x==1 && $tot!= 0) ?  '<td style="text-align: right;">'.number_format($tot,2).'</td>':'<td style="text-align: right;">-</td>';
     										
     									}	
     									

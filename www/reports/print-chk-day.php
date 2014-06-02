@@ -1,7 +1,11 @@
 <?php
 require_once('../../lib/initialize.php');
 !$session->is_logged_in() ? redirect_to("../login"): "";
-$dr = new DateRange($_GET['fr'],$_GET['to'], false);
+if(isset($_GET['fr']) && isset($_GET['to'])){
+	$dr = new DateRange($_GET['fr'],$_GET['to'], false);
+} else {
+	$dr = new DateRange(NULL,NULL,false);	
+}
 if(isset($_GET['ref']) && $_GET['ref']=='print'){
 	$uri = parse_url($_SERVER['REQUEST_URI']);
 	$uri = parse_str($uri['query']);

@@ -353,7 +353,7 @@ $(document).ready(function(e) {
 												if($cvchkdtl->posted==1){
 													echo '<span class="glyphicon glyphicon-ok-circle pull-right" style="color:#5cb85c;" title="posted"></span>';
 												} else {
-													echo '<span class="glyphicon glyphicon-remove-circle pull-right" style="color:#f0ad4e;" title="unposted"></span>';
+													echo '<span class="glyphicon glyphicon-remove-circle pull-right" style="color:#f0ad4e;line-height: 1.3;" title="unposted"></span>';
 												}
 												echo '</td>';
 												echo '<td class="bnk-'.$cvchkdtl->bankcode.'" >'.$cvchkdtl->payee.'</td>';
