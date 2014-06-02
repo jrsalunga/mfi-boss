@@ -7,7 +7,7 @@ if(isset($_GET['ref']) && $_GET['ref']=='print'){
 	$uri = parse_str($uri['query']);
 	$back_uri = 'chk-day?fr='.$fr.'&to='.$to;
 } else {
-	$back_uri = 'chk-day?';
+	$back_uri = 'chk-day';
 }
 ?>
 <!DOCTYPE HTML>
