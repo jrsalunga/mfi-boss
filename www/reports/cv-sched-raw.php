@@ -684,7 +684,7 @@ $(document).ready(function(e) {
     								foreach($dr->getDaysInterval() as $date){
     									$currdate = $date->format("Y-m-d");
     									echo '<tr>';
-    									echo '<td>'.$date->format("M d").'</td>';
+    									echo '<td>'.$date->format("M j, Y").'</td>';
     									$tot = 0;
     									foreach($banks as $bank){
     										$sql = "SELECT SUM(amount) as amount FROM cvchkdtl ";
