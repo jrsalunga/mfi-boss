@@ -304,7 +304,7 @@ $(document).ready(function(e) {
                         <br>
                     </div>
                     <div class="col-md-12">
-                    	<table class="table table-bordered">
+                    	<table class="table table-bordered table-hover">
                         	<thead>
                             	<tr>
                             	<?php
@@ -316,8 +316,8 @@ $(document).ready(function(e) {
                             	<?php
     								foreach($dr->getDaysInterval() as $date){
     									$currdate = $date->format("Y-m-d");
-    									echo '<tr>';
-    									echo '<td>'.$date->format("M d").'</td>';
+    									echo $currdate==date('Y-m-d', strtotime('now'))?'<tr class="success">':'<tr>';
+    									echo '<td>'.$date->format("M j, Y").'</td>';
     									$tot = 0;
     									for($x = 0; $x <= 1; $x++){
     										$sql = "SELECT SUM(b.amount) as amount FROM cvhdr a, cvchkdtl b ";
