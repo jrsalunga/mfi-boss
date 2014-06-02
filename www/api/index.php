@@ -124,6 +124,8 @@ $app->get('/cv-sched', 'getCVSched');
 $app->get('/report/cv', 'getReportCV');
 $app->get('/report/bank/total', 'getReportBankTotal');
 
+$app->get('/report/chk-day', 'getChkDay');
+
 $app->get('/report/bank/status/:status', 'getReportBankByStatus');
 
 
@@ -376,6 +378,71 @@ function getReportBankByStatus($status){
 
         echo PHP_EOL;
     }
+}
+
+
+
+function getChkDay(){
+    $app = \Slim\Slim::getInstance();
+    $r = $app->request();
+
+    $range = new DateRange($r->get('fr'),$r->get('to'));
+
+    $arr = array();
+    //$c = array();
+
+    echo 'Bank,Amount';
+    echo PHP_EOL;
+    foreach($range->getDaysInterval() as $date){
+        $currdate = $date->format("Y-m-d");
+        
+        $sql = "SELECT bankcode, SUM(amount) as amount ";
+        $sql .= "FROM vcvchkdtl WHERE checkdate = '". $currdate."' ";
+        if(in_array($r->get('posted'), array(0,1))){
+            //$sql .= "AND posted = '". $r->get('posted')."' ";
+        }
+        $sql .= "GROUP BY bankid ORDER BY bankcode";
+        $cvchkdtls = vCvchkdtl::find_by_sql($sql); 
+
+        //global $database;
+        //echo $database->last_query;
+        //echo PHP_EOL;
+
+        foreach ($cvchkdtls as $cvchkdtl) {
+
+            //echo $cvchkdtl->bankcode.','.$cvchkdtl->amount.'<br>';
+
+            if(array_key_exists($cvchkdtl->bankcode, $arr)) {
+                //echo $arr[$cvchkdtl->bankcode].'<br>';
+                //echo $cvchkdtl->bankcode.' double '.$cvchkdtl->amount.'<br>';
+                $arr[$cvchkdtl->bankcode] +=  $cvchkdtl->amount;
+            } else {
+
+                $arr[$cvchkdtl->bankcode] =  $cvchkdtl->amount;
+                //array_push($arr, $c);
+
+                
+            }
+
+            //$x = (array) $cvchkdtl;
+            //echo var_dump($x);
+            
+            //echo $cvchkdtl->bankcode.','.$cvchkdtl->amount;
+            //echo PHP_EOL;
+        }          
+
+        
+
+    }
+
+    foreach ($arr as $key => $value) {
+        echo $key.','.$value;
+        echo PHP_EOL;
+    };
+
+
+    
+
 }
 
 

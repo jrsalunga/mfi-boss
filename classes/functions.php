@@ -5,7 +5,7 @@ class DateRange {
 	public $fr;
 	public $to;
 	
-	function __construct($fr=NULL, $to=NULL){
+	function __construct($fr=NULL, $to=NULL, $save=true){
 		
 		
 		
@@ -22,8 +22,11 @@ class DateRange {
 			$this->fr = date('Y-m-d', strtotime($fr));
 		}
 		
-		setcookie("to", $this->to, time() + (86400 * 7)); // 86400 = 1 day
-		setcookie("fr", $this->fr, time() + (86400 * 7)); // 86400 = 1 day
+		if($save){
+			setcookie("to", $this->to, time() + (86400)); // 86400 = 1 day
+			setcookie("fr", $this->fr, time() + (86400)); // 86400 = 1 day
+		}
+		
 	}
 	
 	
@@ -45,13 +48,30 @@ class DateRange {
 		} else {
 			  // First day of the month.
         	$this->fr = date('Y-m-01', strtotime($query_date));
+		}		
+	}
+
+	public static function current(){
+		$query_date = 'now';
+
+		$me = new stdClass; 
+		
+		if(!empty($_COOKIE['to'])){
+			$me->to = $_COOKIE['to'];
+		} else {
+			 // Last day of the month.
+       		$me->to = date('Y-m-t', strtotime('now'));
 		}
 		
 		
-       
-       
+		if(!empty($_COOKIE['fr'])){
+			$me->fr = $_COOKIE['fr'];
+		} else {
+			  // First day of the month.
+        	$me->fr = date('Y-m-01', strtotime($query_date));
+		}
 
-			
+		return $me;		
 	}
 	
 	
@@ -62,6 +82,31 @@ class DateRange {
 		
 		$interval = new DateInterval('P1D');
 		return $daterange = new DatePeriod($begin, $interval ,$end);
+	}
+
+
+	public function fr_prev_day(){
+		//$fr = new DateTime($this->fr);
+		//return $fr->modify('-1 day'); 
+		return $this->fr;
+	}
+
+	public function fr_next_day(){
+		//$fr = new DateTime($this->fr);
+		//return $fr->modify('+1 day'); 
+		return $this->fr;
+	}
+
+	public function to_prev_day(){
+		//$to = new DateTime($this->to);
+		//return $to->modify('-1 day'); 
+		return $this->to;
+	}
+
+	public function to_next_day(){
+		//$to = new DateTime($this->to);
+		//return $to->modify('+1 day'); 
+		return $this->to;
 	}
 								
 	
