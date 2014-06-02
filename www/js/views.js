@@ -69,14 +69,16 @@ var ApvDtl = Backbone.View.extend({
 
 		this.model.on('change', this.render, this);
 
-		this.template = _.template('<td><%= refno %></td><td><%= due %></td>'
+		this.template = _.template('<td>'
+			+'<a href="/reports/accounts-payable-print/<%- id %>" target="_blank">'
+			+'<%- refno %></a></td><td><%- due %></td>'
 			+'<td><%= posted %></td>'
 			+'<td style="text-align: right;"><%= accounting.formatMoney(totamount,"", 2,",") %></td>'
 			+'<td style="text-align: right;"><%= accounting.formatMoney(balance,"", 2,",") %></td>');
 
 	},
 	render: function(){
-		console.log(this);
+		//console.log(this.model.toJSON());
 		this.$el.html(this.template(this.model.toJSON()));
 		this.$el.attr("data-posted", this.model.get('posted'));
 		return this;
@@ -738,7 +740,10 @@ var AgeApvDtl = Backbone.View.extend({
 
 		this.model.on('change', this.render, this);
 
-		this.template = _.template('<td><%- suppliercode %><td><%- refno %></td><td><%- due %></td>'
+		this.template = _.template('<td><%- suppliercode %><td>'
+			+'<a href="/reports/accounts-payable-print/<%- id %>" target="_blank">'
+
+			+'<%- refno %></a></td><td><%- due %></td>'
 			+'<td><%- posted %></td>'
 			+'<td style="text-align: right;"><%= accounting.formatMoney(totamount,"", 2,",") %></td>'
 			+'<td style="text-align: right;"><%= accounting.formatMoney(balance,"", 2,",") %></td>');

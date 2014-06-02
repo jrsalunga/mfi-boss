@@ -38,4 +38,7 @@ LEFT JOIN supplier b
 ON a.supplierid = b.id";
 
 
+$vAccount = "SELECT a.code, a.descriptor, b.descriptor as acctcat, a.type, a.acctcatid, a.id
+FROM account a LEFT JOIN acctcat b
+ON a.acctcatid = b.id"
 ?>

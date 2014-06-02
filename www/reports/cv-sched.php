@@ -606,7 +606,7 @@ $(document).ready(function(e) {
                         <?php
                         $banks = Bank::find_all();
                         ?>
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Days</th><th>Total</th>

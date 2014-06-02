@@ -65,10 +65,13 @@ require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.apvhdr.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.apvdtl.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.bank.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.cvchkdtl.php');
+require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.supplier.php');
+require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.account.php');
 
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.apvhdr.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.apvdtl.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.cvchkdtl.php');
+require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.account.php');
 
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.vproject.php');
 

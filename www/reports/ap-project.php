@@ -324,7 +324,7 @@ $(document).ready(function(e) {
 										foreach($apvdtls1 as $apvdtl1){
 											echo '<tr>';
 											//echo '<td>'.$apvdtl1->account .'</td>';
-											echo '<td><a href="http://mfi.com/transactions/accounts-payable-print/'.$apvdtl1->apvhdrid.'" target="_blank">'.$apvdtl1->refno .'</a></td>';
+											echo '<td><a href="'.$relativeslash.'accounts-payable-print/'.$apvdtl1->apvhdrid.'" target="_blank">'.$apvdtl1->refno .'</a></td>';
 											echo '<td>'. date('F j, Y', strtotime($apvdtl1->date)) .'</td>';
 											echo '<td style="text-align:right;">'. number_format($apvdtl1->amount,2) .'</td>';	
 											echo '</tr>';
