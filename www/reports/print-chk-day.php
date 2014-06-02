@@ -122,7 +122,9 @@ body {
 .gutter {
 	display:none;
 }
-
+table {
+	font-size: 13px;
+}
 </style>
 </head>
 <body>

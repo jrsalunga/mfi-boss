@@ -606,7 +606,7 @@ $(document).ready(function(e) {
                         <?php
                         $banks = Bank::find_all();
                         ?>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>Days</th><th>Total</th>
@@ -616,8 +616,12 @@ $(document).ready(function(e) {
                                 <?php
                                     foreach($dr->getDaysInterval() as $date){
                                         $currdate = $date->format("Y-m-d");
-                                        echo '<tr>';
-                                        echo '<td>'.$date->format("M d").'</td>';
+                                       // echo '<tr>';
+										echo $currdate==date('Y-m-d', strtotime('now'))?'<tr class="success">':'<tr>';
+									
+											echo '<td>'.$date->format("M j, Y").'</td>';
+										
+                                        
                                         
                                         //foreach($banks as $bank){
                                             $sql = "SELECT SUM(amount) as amount FROM cvchkdtl ";

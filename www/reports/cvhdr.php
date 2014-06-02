@@ -295,8 +295,8 @@ $(document).ready(function(e) {
                     <div class="col-md-6">
                     </div>
                     <div class="col-md-6">
-                    	<a class="btn btn-primary pull-right" href="cv-sched">
-                        <span class="glyphicon glyphicon-list-alt" style="color: #fff;"></span>
+                    	<a class="btn btn-default pull-right" href="cv-sched">
+                        <span class="glyphicon glyphicon-unshare"></span>
                         Back to Summary
                         </a>
                         <br>

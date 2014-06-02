@@ -583,8 +583,8 @@ $(document).ready(function(e) {
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <a class="btn btn-primary" href="cv-sched">
-                        <span style="color: #fff;" class="glyphicon glyphicon-list-alt"></span>
+                        <a class="btn btn-default" href="cv-sched">
+                        <span class="glyphicon glyphicon-unshare"></span>
                         Back to Summary
                         </a>
                     </div>
@@ -667,7 +667,7 @@ $(document).ready(function(e) {
                     	<?php
     						$banks = Bank::find_all();
     					?>
-                    	<table class="table table-bordered">
+                    	<table class="table table-bordered table-hover">
                         	<thead>
                             	<tr>
                             	<?php
@@ -683,7 +683,7 @@ $(document).ready(function(e) {
                             	<?php
     								foreach($dr->getDaysInterval() as $date){
     									$currdate = $date->format("Y-m-d");
-    									echo '<tr>';
+    									echo $currdate==date('Y-m-d', strtotime('now'))?'<tr class="success">':'<tr>';
     									echo '<td><a href="chk-day?fr='.$currdate.'&to='.$currdate.'">'.$date->format("M j, Y").'</a></td>';
     									$tot = 0;
     									foreach($banks as $bank){
