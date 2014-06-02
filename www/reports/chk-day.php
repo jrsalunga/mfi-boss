@@ -305,7 +305,7 @@ $(document).ready(function(e) {
                           	<a class="btn btn-default" href="?fr=<?=$dr->fr_next_day()?>&to=<?=$dr->to_next_day()?>"><span class="glyphicon glyphicon-forward"></span></a>
                         </div>
                         
-                        <a class="btn btn-default" href="print-chk-day<?=$qs?>"><span class="glyphicon glyphicon-print"></span> Printer Friendly</a>
+                        <a class="btn btn-default" href="print-chk-day<?=$qs?>&ref=print"><span class="glyphicon glyphicon-print"></span> Printer Friendly</a>
                 
                     	
                     </div>

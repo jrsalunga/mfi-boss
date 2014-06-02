@@ -2,6 +2,13 @@
 require_once('../../lib/initialize.php');
 !$session->is_logged_in() ? redirect_to("../login"): "";
 $dr = new DateRange($_GET['fr'],$_GET['to'], false);
+if(isset($_GET['ref']) && $_GET['ref']=='print'){
+	$uri = parse_url($_SERVER['REQUEST_URI']);
+	$uri = parse_str($uri['query']);
+	$back_uri = 'chk-day?fr='.$fr.'&to='.$to;
+} else {
+	$back_uri = 'chk-day';
+}
 ?>
 <!DOCTYPE HTML>
 <html lang="en-ph">
@@ -123,7 +130,7 @@ body {
 	<div class="row">
         <div class="col-md-7">
             <div class="btn-grp">
-            	<a type="button" class="btn btn-default" href="chk-day">
+            	<a type="button" class="btn btn-default" href="<?=$back_uri?>">
                     <span class="glyphicon glyphicon-unshare"></span>
                     Back
                 </a>
