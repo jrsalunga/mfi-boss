@@ -40,5 +40,18 @@ ON a.supplierid = b.id";
 
 $vAccount = "SELECT a.code, a.descriptor, b.descriptor as acctcat, a.type, a.acctcatid, a.id
 FROM account a LEFT JOIN acctcat b
-ON a.acctcatid = b.id"
+ON a.acctcatid = b.id";
+
+
+$vCvchkdtl = "SELECT a.checkno, a.checkdate, a.amount, a.id,
+b.refno, b.payee, b.posted, b.date as cvhdrdate, b.id as cvhdrid,
+c.descriptor as supplier, c.code as suppliercode, c.id as supplierid,
+d.descriptor as bank, d.code as bankcode, d.acctno, d.id as bankid
+FROM cvchkdtl a
+LEFT JOIN cvhdr b
+ON a.cvhdrid = b.id
+LEFT JOIN supplier c
+ON b.supplierid = c.id
+LEFT JOIN bank d
+ON d.id = a.bankacctid";
 ?>

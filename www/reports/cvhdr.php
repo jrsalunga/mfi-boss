@@ -78,6 +78,8 @@ $(document).ready(function(e) {
                 height: 250,
                 spacingRight: 0
             },
+			colors:[
+                '#51ABD2', '#F29885', '#ACFFD2'],
             title: {
                 text: ''
             },
