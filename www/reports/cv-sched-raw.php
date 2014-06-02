@@ -696,7 +696,8 @@ $(document).ready(function(e) {
 											$tot = $tot + $cvchkdtl->amount;
     										echo '<td style="text-align: right;">';
 											if($cvchkdtl->checkno > 0){
-												echo '<span class="pull-left"><a href="chk-day?fr='.$currdate.'&to='.$currdate.'">'.$cvchkdtl->checkno.'</a></span>';	
+												echo '<span class="pull-left"><a href="chk-day?fr='.$currdate.'&to='.$currdate.'"  style="color:#5cb85c; text-decoration:none;">'.$cvchkdtl->checkno;
+												echo ' <span class="glyphicon glyphicon-money"></span></a></span>';	
 											}
 											echo $amt.'</td>';
 											$tot = ($tot == 0) ? '-':$tot;

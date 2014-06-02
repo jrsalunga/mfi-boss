@@ -3005,6 +3005,10 @@ input[type="button"].btn-block {
 	font-family: 'Glyphicons Regular';
   	content: "\e444";
 }
+.glyphicon-money:before {
+	font-family: 'Glyphicons Regular';
+  	content: "\e459";
+}
 .caret {
   display: inline-block;
   width: 0;
