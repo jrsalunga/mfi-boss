@@ -329,7 +329,8 @@ $(document).ready(function(e) {
 			chart: {
                 zoomType: 'x',
                 height: 250,
-                spacingRight: 0
+                spacingRight: 0,
+                marginTop: 35
             },
             title: {
                 text: ''
@@ -384,7 +385,7 @@ $(document).ready(function(e) {
             legend: {
                 align: 'left',
                 verticalAlign: 'top',
-                y: 20,
+                y: -10,
                 floating: true,
                 borderWidth: 0
             },
@@ -415,13 +416,14 @@ $(document).ready(function(e) {
                         }
                     },
                     marker: {
-                        lineWidth: 1
+                        lineWidth: 1,
+                        symbol: 'circle'
                     }
                 }
             },
             series: [
 				{
-					name: 'BDO-QP2',
+					name: 'BDO',
 					lineWidth: 3,
 					marker: {
 						radius: 4
@@ -530,7 +532,7 @@ $(document).ready(function(e) {
                 <div class="row">
                 	<div class="col-md-12 title">
                 		<div class="col-md-12">
-                        	<div id="graph">
+                        	<div id="graph" class="graph-full">
                             </div>
                         </div>
                 	</div>

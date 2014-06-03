@@ -389,7 +389,7 @@ function getChkDay(){
     $range = new DateRange($r->get('fr'),$r->get('to'));
 
     $arr = array();
-    //$c = array();
+    $p = $r->get('posted');
 
     echo 'Bank,Amount';
     echo PHP_EOL;
@@ -398,8 +398,8 @@ function getChkDay(){
         
         $sql = "SELECT bankcode, SUM(amount) as amount ";
         $sql .= "FROM vcvchkdtl WHERE checkdate = '". $currdate."' ";
-        if($r->get('posted')==1 || $r->get('posted')==0){
-            $sql .= "AND posted = '". $r->get('posted')."' ";
+        if(isset($p) && ($p==1 || $p==0)){
+            $sql .= "AND posted = '".$p."' ";
         }
         $sql .= "GROUP BY bankid ORDER BY bankcode";
         $cvchkdtls = vCvchkdtl::find_by_sql($sql); 

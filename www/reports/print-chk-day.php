@@ -216,7 +216,7 @@ table {
                     
                     $sql = "SELECT * FROM vcvchkdtl ";
                     $sql .= "WHERE checkdate = '".$currdate."' ";
-					if(!empty($_GET['posted']) && in_array($_GET['posted'], array(0,1))){
+					if(isset($_GET['posted']) && ($_GET['posted']==1 || $_GET['posted']==0)){
 						$sql .= "AND posted = '".$_GET['posted']."' ";
 					} 
                     $sql .= "ORDER BY bankcode ASC, payee";

@@ -14,6 +14,7 @@ if(isset($_GET['fr']) && isset($_GET['to'])){
 
 $uri = explode('?',$_SERVER['REQUEST_URI']);
 $qs = !empty($uri[1]) ? '?'.$uri[1] : '?fr='.$dr->fr.'&to='.$dr->to;
+
 ?>
 <!DOCTYPE HTML>
 <html lang="en-ph">
@@ -322,9 +323,7 @@ $(document).ready(function(e) {
                     	<table class="table table-bordered">
                         	<thead>
                             	<tr>
-                            	<?php
-    								echo '<th>Day(s)</th><th>CV Ref No</th><th>Bank</th><th>Check No</th><th>Payee</th><th>Check Amount</th>';
-    							?>
+                                <th>Day(s)</th><th>CV Ref No</th><th>Bank</th><th>Check No</th><th>Payee</th><th>Check Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -335,7 +334,7 @@ $(document).ready(function(e) {
     									
 										$sql = "SELECT * FROM vcvchkdtl ";
     									$sql .= "WHERE checkdate = '".$currdate."' ";
-										if(!empty($_GET['posted']) && in_array($_GET['posted'], array(0,1))){
+										if(isset($_GET['posted']) && ($_GET['posted']==1 || $_GET['posted']==0)){
 											$sql .= "AND posted = '".$_GET['posted']."' ";
 										} 
 										$sql .= "ORDER BY bankcode ASC, payee";
