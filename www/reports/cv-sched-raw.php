@@ -2,7 +2,7 @@
 require_once('../../lib/initialize.php');
 !$session->is_logged_in() ? redirect_to("../login"): "";
 if(isset($_GET['fr']) && isset($_GET['to'])){
-	$dr = new DateRange($_GET['fr'],$_GET['to'], false);
+	$dr = new DateRange($_GET['fr'],$_GET['to']);
 } else {
 	$dr = new DateRange(NULL,NULL,false);	
 }
@@ -623,6 +623,13 @@ $(document).ready(function(e) {
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-3 col-sm-6 col-md-offset-9">
+                        <div class="pull-right">
+                            <a class="btn btn-default" href="print-cv-sched-raw"><span class="glyphicon glyphicon-print"></span> Printer Friendly</a>
+                            
+                        </div>
+                        
+                    </div>
                     <!--
                 	<div class="col-md-3 GAcf">
                     	<div>
@@ -671,6 +678,7 @@ $(document).ready(function(e) {
                     	<?php
     						$banks = Bank::find_all();
     					?>
+                        <br>
                     	<table class="table table-bordered table-hover">
                         	<thead>
                             	<tr>
