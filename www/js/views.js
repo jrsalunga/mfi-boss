@@ -72,7 +72,8 @@ var ApvDtl = Backbone.View.extend({
 		this.template = _.template('<td>'
 			+'<a href="/reports/accounts-payable-print/<%- id %>" target="_blank">'
 			+'<%- refno %></a></td><td><%- due %></td>'
-			+'<td><%= posted %></td>'
+			+'<td><% if(posted==1){ %> <span class="glyphicon glyphicon-posted pull-right" title="Posted"></span>'
+			+'<% } else { %>  <span class="glyphicon glyphicon-unposted pull-right" title="Unposted"></span>  <% } %></td>'
 			+'<td style="text-align: right;"><%= accounting.formatMoney(totamount,"", 2,",") %></td>'
 			+'<td style="text-align: right;"><%= accounting.formatMoney(balance,"", 2,",") %></td>');
 
@@ -744,7 +745,8 @@ var AgeApvDtl = Backbone.View.extend({
 			+'<a href="/reports/accounts-payable-print/<%- id %>" target="_blank">'
 
 			+'<%- refno %></a></td><td><%- due %></td>'
-			+'<td><%- posted %></td>'
+			+'<td><% if(posted==1){ %> <span class="glyphicon glyphicon-posted pull-right" title="Posted"></span>'
+			+'<% } else { %>  <span class="glyphicon glyphicon-unposted pull-right" title="Unposted"></span>  <% } %></td>'
 			+'<td style="text-align: right;"><%= accounting.formatMoney(totamount,"", 2,",") %></td>'
 			+'<td style="text-align: right;"><%= accounting.formatMoney(balance,"", 2,",") %></td>');
 
