@@ -149,21 +149,19 @@ table {
                     <span class="glyphicon glyphicon-print"></span>
                     Print
                 </button>
-                <!--
                 <div class="btn-group">
-                	<a class="btn btn-default" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>"><span class="glyphicon glyphicon-floppy"></span> All</a>
-                    <a class="btn btn-default" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>&posted=0"><span class="glyphicon glyphicon-floppy-remove"></span> Unposted</a>
-                    <a class="btn btn-default" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>&posted=1"><span class="glyphicon glyphicon-floppy-saved"></span> Posted</a>
-            	</div>
+                    <a class="btn btn-default <?=!isset($_GET['posted'])?'active':''?>" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>"><span class="glyphicon glyphicon-floppy"></span> All</a>
+                    <a class="btn btn-default <?=(isset($_GET['posted']) && $_GET['posted']==0)?'active':''?>" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>&posted=0"><span class="glyphicon glyphicon-floppy-remove"></span> Unposted</a>
+                    <a class="btn btn-default <?=(isset($_GET['posted']) && $_GET['posted']==1)?'active':''?>" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>&posted=1"><span class="glyphicon glyphicon-floppy-saved"></span> Posted</a>
+                </div>
                 <div class="btn-group">
                     <a class="btn btn-default" title="previous date range" href="?fr=<?=$dr->fr_prev_day()?>&to=<?=$dr->to_prev_day()?>">
-                    	<span class="glyphicon glyphicon-backward"></span> Prev
-                   	</a>
+                        <span class="glyphicon glyphicon-backward"></span> Prev
+                    </a>
                     <a class="btn btn-default" title="next date range" href="?fr=<?=$dr->fr_next_day()?>&to=<?=$dr->to_next_day()?>">
-                    	 Next <span class="glyphicon glyphicon-forward"></span>
-                 	</a>
+                         Next <span class="glyphicon glyphicon-forward"></span>
+                    </a>
                 </div>
-                -->
             </div>
         </div>
         <!--
@@ -197,7 +195,17 @@ table {
 	
 </div>
 <div class="prn-header">
-	<h1>Check Voucher Schedule - Bank</h1>
+	<h1>Check Voucher Schedule - Bank Details
+    <?php
+    if(isset($_GET['posted']) && $_GET['posted']=='0'){
+        echo ' (Unposted)';
+    } else if(isset($_GET['posted']) && $_GET['posted']=='1'){
+        echo ' (Posted)';
+    } else {
+
+    }
+    ?>
+    </h1>
 </div>
 <div class="prn-body">
 	<?php
@@ -223,10 +231,13 @@ table {
     									echo '<td>'.$date->format("M j, Y").'</td>';
     									$tot = 0;
     									foreach($banks as $bank){
-    										$sql = "SELECT SUM(amount) as amount FROM cvchkdtl ";
+    										$sql = "SELECT SUM(amount) as amount FROM vcvchkdtl ";
     										$sql .= "WHERE checkdate = '".$currdate."' ";
-    										$sql .= "AND bankacctid = '".$bank->id."'";
-    										$cvchkdtl = Cvchkdtl::find_by_sql($sql); 
+                                            if(isset($_GET['posted']) && ($_GET['posted']==1 || $_GET['posted']==0)){
+                                                $sql .= "AND posted = '".$_GET['posted']."' ";
+                                            } 
+    										$sql .= "AND bankid = '".$bank->id."'";
+    										$cvchkdtl = vCvchkdtl::find_by_sql($sql); 
     										$cvchkdtl = array_shift($cvchkdtl);
     										$amt = empty($cvchkdtl->amount) ? '-': number_format($cvchkdtl->amount, 2);
     										$tot = $tot + $cvchkdtl->amount;

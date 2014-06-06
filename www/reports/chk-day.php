@@ -262,7 +262,7 @@ $(document).ready(function(e) {
                 	<div class="col-md-6">
                     		
                         	
-  	                      	<a type="button" class="btn btn-default" href="<?=(isset($_COOKIE['ref']) && !empty( $_COOKIE['ref'])) ? $_COOKIE['ref']:'cv-sched-raw'; ?>">
+  	                      	<a type="button" class="btn btn-default" href="<?=isset($_GET['ref']) ? $_GET['ref']:'cv-sched-raw'; ?>">
                             	<span class="glyphicon glyphicon-unshare"></span>
                            	</a>
                             <!--
@@ -303,9 +303,9 @@ $(document).ready(function(e) {
                         </div>
                     </div>
                 	<div class="col-md-5">  
-						<a class="btn btn-default" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>"><span class="glyphicon glyphicon-floppy"></span> All</a>
-                        <a class="btn btn-default" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>&posted=0"><span class="glyphicon glyphicon-floppy-remove"></span> Unposted</a>
-                        <a class="btn btn-default" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>&posted=1"><span class="glyphicon glyphicon-floppy-saved"></span> Posted</a>
+                        <a class="btn btn-default <?=!isset($_GET['posted'])?'active':''?>" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>"><span class="glyphicon glyphicon-floppy"></span> All</a>
+                        <a class="btn btn-default <?=(isset($_GET['posted']) && $_GET['posted']==0)?'active':''?>" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>&posted=0"><span class="glyphicon glyphicon-floppy-remove"></span> Unposted</a>
+                        <a class="btn btn-default <?=(isset($_GET['posted']) && $_GET['posted']==1)?'active':''?>" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>&posted=1"><span class="glyphicon glyphicon-floppy-saved"></span> Posted</a>
                     </div>
                     <div class="col-md-3 col-sm-6 col-md-offset-4">
                     	<div class="btn-group pull-right">

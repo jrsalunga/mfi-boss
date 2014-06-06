@@ -623,13 +623,7 @@ $(document).ready(function(e) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-6 col-md-offset-9">
-                        <div class="pull-right">
-                            <a class="btn btn-default" href="print-cv-sched-raw"><span class="glyphicon glyphicon-print"></span> Printer Friendly</a>
-                            
-                        </div>
-                        
-                    </div>
+                    
                     <!--
                 	<div class="col-md-3 GAcf">
                     	<div>
@@ -643,20 +637,7 @@ $(document).ready(function(e) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 GAcf">
-                    	<div>
-                            <p>Posted</p>
-                            <div class="GAJv">
-                            	<?php
-									$drtotp = Cvchkdtl::total_status_by_date_range($dr->fr, $dr->to, 1); 									
-								?>
-                                <h4><?=number_format($drtotp->amount,2)?></h4>
-                                <div id="sg-posted" class="thumb-graph">
-                                	
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    -->                 
                     <div class="col-md-3 GAcf">
                     	<div>
                             <p>Unposted</p>
@@ -671,9 +652,32 @@ $(document).ready(function(e) {
                             </div>
                         </div>
                     </div>
-                    -->    
+                    <div class="col-md-3 GAcf">
+                        <div>
+                            <p>Posted</p>
+                            <div class="GAJv">
+                                <?php
+                                    $drtotp = Cvchkdtl::total_status_by_date_range($dr->fr, $dr->to, 1);                                    
+                                ?>
+                                <h4><?=number_format($drtotp->amount,2)?></h4>
+                                <div id="sg-posted" class="thumb-graph">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      
                 		
-               
+                    <div class="col-md-10">
+                        <a class="btn btn-default <?=!isset($_GET['posted'])?'active':''?>" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>"><span class="glyphicon glyphicon-floppy"></span> All</a>
+                        <a class="btn btn-default <?=(isset($_GET['posted']) && $_GET['posted']==0)?'active':''?>" href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>&posted=0"><span class="glyphicon glyphicon-floppy-remove"></span> Unposted</a>
+                        <a class="btn btn-default <?=(isset($_GET['posted']) && $_GET['posted']==1)?'active':''?>" <?=!isset($_GET['posted'])?'active':''?> href="?fr=<?=$dr->fr?>&to=<?=$dr->to?>&posted=1"><span class="glyphicon glyphicon-floppy-saved"></span> Posted</a>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="pull-right">
+                            <a class="btn btn-default" href="print-cv-sched-raw<?=$qs?>"><span class="glyphicon glyphicon-print"></span> Printer Friendly</a>                     
+                        </div>     
+                    </div>  
              		<div class="col-md-12">
                     	<?php
     						$banks = Bank::find_all();
@@ -695,14 +699,19 @@ $(document).ready(function(e) {
                             	<?php
     								foreach($dr->getDaysInterval() as $date){
     									$currdate = $date->format("Y-m-d");
-    									echo $currdate==date('Y-m-d', strtotime('now'))?'<tr class="success">':'<tr>';
+    									echo $currdate == date('Y-m-d', strtotime('now')) ? '<tr class="success">':'<tr>';
     									echo '<td><a href="chk-day?fr='.$currdate.'&to='.$currdate.'">'.$date->format("M j, Y").'</a></td>';
     									$tot = 0;
     									foreach($banks as $bank){
-    										$sql = "SELECT SUM(amount) as amount, COUNT(amount) as checkno FROM cvchkdtl ";
+    										$sql = "SELECT SUM(amount) as amount, COUNT(amount) as checkno FROM vcvchkdtl ";
     										$sql .= "WHERE checkdate = '".$currdate."' ";
-    										$sql .= "AND bankacctid = '".$bank->id."'";
-    										$cvchkdtl = Cvchkdtl::find_by_sql($sql); 
+                                            if(isset($_GET['posted']) && ($_GET['posted']==1 || $_GET['posted']==0)){
+                                                $sql .= "AND posted = '".$_GET['posted']."' ";
+                                            } 
+    										$sql .= "AND bankid = '".$bank->id."'";
+    										$cvchkdtl = vCvchkdtl::find_by_sql($sql);
+                                            //global $database;
+                                            //echo $database->last_query.'<br>'; 
     										$cvchkdtl = array_shift($cvchkdtl);
     										$amt = empty($cvchkdtl->amount) ? '-': number_format($cvchkdtl->amount, 2);
 											$tot = $tot + $cvchkdtl->amount;
