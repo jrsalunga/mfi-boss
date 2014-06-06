@@ -41,9 +41,9 @@ if(isset($_GET['fr']) && isset($_GET['to'])){
 <script src="../js/vendors/accounting.js"></script>
 <script src="../js/vendors/jquery.filedrop.js"></script>
 
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/modules/data.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script src="../js/vendors/highcharts-4.0.1.min.js"></script>
+<script src="../js/vendors/highcharts.data.js"></script>
+<script src="../js/vendors/highcharts.exporting-4.0.1.js"></script>
 
 <script src="../js/common.js"></script>
 
@@ -80,7 +80,8 @@ $(document).ready(function(e) {
 			chart: {
                 zoomType: 'x',
                 height: 250,
-                spacingRight: 0
+                spacingRight: 0,
+                marginTop: 35
             },
 			colors:[
                 '#51ABD2', '#F29885', '#ACFFD2'],
@@ -100,7 +101,7 @@ $(document).ready(function(e) {
                 labels: {
                     align: 'left',
                     x: 3,
-                    y: -3
+                    y: 15
                 }
             },
             yAxis: [{ // left y axis
@@ -115,7 +116,9 @@ $(document).ready(function(e) {
                     format: '{value:.,0f}'
                 },
                 showFirstLabel: false
-            }, { // right y axis
+            }, 
+            /*
+            { // right y axis
                 linkedTo: 0,
                 gridLineWidth: 0,
                 opposite: true,
@@ -129,11 +132,13 @@ $(document).ready(function(e) {
                     format: '{value:.,0f}'
                 },
                 showFirstLabel: false
-            }],
+            }
+            */
+            ],
             legend: {
                 align: 'left',
                 verticalAlign: 'top',
-                y: 20,
+                y: -10,
                 floating: true,
                 borderWidth: 0
             },
@@ -167,7 +172,8 @@ $(document).ready(function(e) {
                         }
                     },
                     marker: {
-                        lineWidth: 1
+                        lineWidth: 1,
+                        symbol: 'circle'
                     }
                 }
             },
@@ -294,7 +300,7 @@ $(document).ready(function(e) {
                 <div class="row">
                 	<div class="col-md-12 title">
                 		<div class="col-md-12">
-                        	<div id="graph">
+                        	<div id="graph"  class="graph-full">
                             </div>
                         </div>
                 	</div>
@@ -321,26 +327,45 @@ $(document).ready(function(e) {
                             <tbody>
                             	<?php
     								foreach($dr->getDaysInterval() as $date){
-    									$currdate = $date->format("Y-m-d");
-    									echo $currdate==date('Y-m-d', strtotime('now'))?'<tr class="success">':'<tr>';
-    									echo '<td>'.$date->format("M j, Y").'</td>';
-    									$tot = 0;
-    									for($x = 0; $x <= 1; $x++){
-    										$sql = "SELECT SUM(b.amount) as amount FROM cvhdr a, cvchkdtl b ";
-    										$sql .= "WHERE a.id = b.cvhdrid AND b.checkdate = '".$currdate."' ";
-    										$sql .= "AND a.posted = '".$x."'";
-    										$cvchkdtl = Cvchkdtl::find_by_sql($sql); 
-    										$cvchkdtl = array_shift($cvchkdtl);
-    										$amt = empty($cvchkdtl->amount) ? '-': number_format($cvchkdtl->amount, 2);
-											$tot = $tot + $cvchkdtl->amount;
-    										echo '<td style="text-align: right;">'.$amt.'</td>';
-											$tot = ($tot == 0) ? '-':$tot;
-											echo ($x==1 && $tot != 0) ?  '<td style="text-align: right;">'.number_format($tot,2).'</td>':'<td style="text-align: right;">-</td>';
-    										
-    									}	
-    									
-    									echo '</tr>';
-    								}
+                                        $currdate = $date->format("Y-m-d");
+                                        echo $currdate==date('Y-m-d', strtotime('now'))?'<tr class="success">':'<tr>';
+                                        echo '<td><a href="chk-day?fr='.$currdate.'&to='.$currdate.'&ref=cvhdr">'.$date->format("M j, Y").'</a></td>';
+                                        $tot = 0;
+                                        $tot_check = 0;
+                                        for($x = 0; $x <= 1; $x++){
+                                            $sql = "SELECT SUM(b.amount) as amount, COUNT(b.amount) as checkno FROM cvhdr a, cvchkdtl b ";
+                                            $sql .= "WHERE a.id = b.cvhdrid AND b.checkdate = '".$currdate."' ";
+                                            $sql .= "AND a.posted = '".$x."'";
+                                            $cvchkdtl = Cvchkdtl::find_by_sql($sql); 
+                                            $cvchkdtl = array_shift($cvchkdtl);
+                                            $amt = empty($cvchkdtl->amount) ? '-': number_format($cvchkdtl->amount, 2);
+                                            $tot = $tot + $cvchkdtl->amount;
+                                            echo '<td style="text-align: right;">';
+                                            if($cvchkdtl->checkno > 0){
+                                                echo '<span class="pull-left" title="'.$cvchkdtl->checkno.' check(s)">';
+                                                echo '<a href="chk-day?fr='.$currdate.'&to='.$currdate.'&posted='.$x.'&ref=cvhdr" style="color: #5cb85c; text-decoration: none;">';
+                                                echo $cvchkdtl->checkno .' <span class="glyphicon glyphicon-money"></span></a></span>';
+                                                
+                                            }   
+                                            echo $amt.'</td>';
+                                            $tot = ($tot == 0) ? '-':$tot;
+                                            $tot_check = $tot_check + $cvchkdtl->checkno;
+                                            if($x==1){
+                                                echo '<td style="text-align: right;">';
+                                                if($tot_check > 0){
+                                                    echo '<span class="pull-left" title="'.$tot_check.' check(s)">';
+                                                    echo '<a href="chk-day?fr='.$currdate.'&to='.$currdate.'&ref=cvhdr" style="color: #5cb85c; text-decoration: none;">';
+                                                    echo $tot_check .' <span class="glyphicon glyphicon-money"></span></a></span>';
+                                                }   
+                                                echo $tot!='-' ? number_format($tot,2).'</td>': '-</td>';
+                                            } else {
+                                                    
+                                            }
+                                            
+                                        }   
+                                        
+                                        echo '</tr>';
+                                    }
     							?>
                             </tbody>
                         </table>

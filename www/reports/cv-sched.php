@@ -118,8 +118,7 @@ $(document).ready(function(e) {
                 tickWidth: 0,
                 gridLineWidth: 0,
                 labels: {
-                     enabled: false
-                    
+                     enabled: false    
                 }
             },
              yAxis: { // left y axis
@@ -623,8 +622,7 @@ $(document).ready(function(e) {
                                         $currdate = $date->format("Y-m-d");
                                        // echo '<tr>';
 										echo $currdate==date('Y-m-d', strtotime('now'))?'<tr class="success">':'<tr>';
-									
-											echo '<td>'.$date->format("M j, Y").'</td>';
+										echo '<td><a href="chk-day?fr='.$currdate.'&to='.$currdate.'&ref=cv-sched">'.$date->format("M j, Y").'</a></td>';
 										
                                         
                                         
