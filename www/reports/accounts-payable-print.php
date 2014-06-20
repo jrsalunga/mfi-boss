@@ -17,8 +17,8 @@ $apvhdr = Apvhdr::find_by_id($apvhdrid);
 <meta charset="utf-8">
 <title>Accounts Payable : <?=$apvhdr->refno?></title>
 
-<link rel="stylesheet" href="../css/print.css">
-<link rel="stylesheet" href="<?=$relativeslash?>../css/print.css">
+
+<link rel="stylesheet" href="/css/print.css">
 
 
 <style media="screen">
@@ -85,10 +85,7 @@ $apvhdr = Apvhdr::find_by_id($apvhdrid);
    		<div id="m-container">
    			<div id="hdr">
             	<div id="supplier-title">
-                <?php
-					#$location = Location::find_by_id($apvhdr->locationid);
-				?>
-                <div><?=$location->code?></div>
+                
                 
                 
                 </div>

@@ -279,7 +279,14 @@ $(document).ready(function(e) {
                 	</div>
                 </div>
                 <div class="row">
-                	<div class="col-md-12 datepick pull-right">
+                    <div class="col-md-6">
+                        <a class="btn btn-default" href="cv-sched">
+                        <span class="glyphicon glyphicon-unshare"></span>
+                        Back to Summary
+                        </a>
+                       
+                    </div>
+                	<div class="col-md-6 datepick pull-right">
                 		<div>
                         
                         	<form role="form" class="form-inline pull-right">
@@ -304,18 +311,16 @@ $(document).ready(function(e) {
                             </div>
                         </div>
                 	</div>
-                    <div class="col-md-6">
-                    </div>
-                    <div class="col-md-6">
-                    	<a class="btn btn-default pull-right" href="cv-sched">
-                        <span class="glyphicon glyphicon-unshare"></span>
-                        Back to Summary
-                        </a>
-                        <br>
-                        <br>
-                        <br>
+                    <div class="col-md-3 col-sm-6 col-md-offset-9">
+                        <div class="pull-right">
+                            <a class="btn btn-default" href="print-cvhdr">
+                            <span class="glyphicon glyphicon-print"></span>
+                            Printer Friendly
+                            </a>
+                        </div>
                     </div>
                     <div class="col-md-12">
+                        <br>
                     	<table class="table table-bordered table-hover">
                         	<thead>
                             	<tr>
